@@ -1,0 +1,6 @@
+interface:
+  display_name: "Chartline · 价格见势"
+  short_description: "先以27个讲义框架判断走势，最后评估BBI与买卖节奏"
+  default_prompt: "使用 $chartline 先按两套讲义分析指定股票并保存独立方向判断，再在最后评估BBI与买卖节奏，输出正反模型及图表对照。"
+policy:
+  allow_implicit_invocation: true

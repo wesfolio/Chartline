@@ -1,0 +1,187 @@
+{
+  "version": "0.4.0",
+  "implementation_status": "TARGET_CONTRACT_PARTIALLY_IMPLEMENTED_IN_PROTOTYPE_0.2",
+  "requirement_source": [
+    "USER_REQUIREMENT_2026_09_14",
+    "USER_REQUIREMENT_2026_09_15",
+    "USER_CORRECTION_BBI_SUPPORT_ONLY"
+  ],
+  "required_sections": [
+    "fundamental_premise",
+    "short_horizon_assessment",
+    "long_horizon_assessment",
+    "daily_bbi_price_card",
+    "weekly_bbi_price_card",
+    "model_evidence_matrix",
+    "conflict_analysis",
+    "conditional_scenarios",
+    "invalidation_and_data_quality",
+    "daily_weekly_context_charts",
+    "theory_vs_actual_chart_pairs",
+    "visual_condition_comparison"
+  ],
+  "price_card_fields": [
+    "bar_end",
+    "as_of",
+    "price_basis",
+    "bbi_windows",
+    "bbi_value",
+    "atr_value",
+    "band_multiplier",
+    "technical_band",
+    "current_price_and_timestamp",
+    "distance_percent",
+    "distance_atr",
+    "tradeable_price_band_or_null",
+    "conversion_evidence",
+    "tick_grid_evidence",
+    "trend_state",
+    "bbi_slope",
+    "fundamental_status",
+    "invalidation",
+    "valid_until",
+    "target_if_supported",
+    "risk_reward_if_supported",
+    "snapshot_sha256",
+    "technical_state",
+    "evidence_role",
+    "prior_above_bbi_run",
+    "required_prior_bars",
+    "prior_uptrend",
+    "exact_touch",
+    "close_holds_reference",
+    "support_present",
+    "usable_buy_support",
+    "sufficient_to_buy",
+    "buy_action",
+    "numeric_score_weight"
+  ],
+  "model_row_fields": [
+    "model_id",
+    "model_family",
+    "bar_timeframe",
+    "forecast_horizon",
+    "applicability",
+    "not_applicable_reason",
+    "parameters",
+    "input_as_of",
+    "observations",
+    "numeric_values",
+    "chart_evidence_ids",
+    "direction",
+    "reasoning_chain",
+    "counter_evidence",
+    "confirmation",
+    "invalidation",
+    "validation_status",
+    "data_limitations"
+  ],
+  "conflict_fields": [
+    "models",
+    "same_horizon",
+    "conflict_type",
+    "bullish_case",
+    "bearish_case",
+    "evidence_that_would_resolve",
+    "effect_on_bbi_support"
+  ],
+  "direction_enum": [
+    "BULLISH",
+    "BEARISH",
+    "RANGE",
+    "CONFLICTED",
+    "INSUFFICIENT"
+  ],
+  "fundamental_enum": [
+    "VERIFIED_SUPPORT",
+    "USER_ASSUMED",
+    "UNKNOWN",
+    "CONTRADICTED"
+  ],
+  "confidence_policy": "No numerical probability without auditable out-of-sample calibration; correlated price-derived models are not independent votes.",
+  "pdf_fonts": {
+    "chinese_body": "SimSun",
+    "english_body": "Times New Roman",
+    "all_headings": "LiSu"
+  },
+  "live_enabled": false,
+  "visual_comparison": {
+    "required_for_every_instrument_decision": true,
+    "decision_states": [
+      "BUY_CANDIDATE",
+      "WAIT",
+      "DO_NOT_BUY",
+      "INSUFFICIENT"
+    ],
+    "minimum_context": [
+      "daily",
+      "completed_weekly"
+    ],
+    "mandatory_pairs": [
+      "daily_bbi",
+      "weekly_bbi",
+      "decisive_applicable_models",
+      "material_counter_models"
+    ],
+    "pair_fields": [
+      "chart_id",
+      "model_id",
+      "theory_source_reference",
+      "theory_is_redrawn_or_original",
+      "theory_is_synthetic",
+      "symbol",
+      "timeframe",
+      "forecast_horizon",
+      "as_of",
+      "data_last_bar",
+      "price_basis",
+      "snapshot_sha256",
+      "parameters",
+      "actual_window",
+      "axis_units",
+      "normalization_if_any",
+      "anchor_ids",
+      "condition_status_rows",
+      "confirmation",
+      "invalidation",
+      "decision_impact"
+    ],
+    "condition_status_enum": [
+      "MET",
+      "NOT_MET",
+      "UNCONFIRMED",
+      "NOT_APPLICABLE",
+      "INSUFFICIENT"
+    ],
+    "actual_chart_source": "Programmatic plotting of observed market data; no generated fake candles",
+    "future_path_policy": "Separate hypothetical scenarios from observed prices; visible decision cutoff",
+    "missing_data_policy": "Show missing evidence and inability to compare, never fabricate actual chart",
+    "formats": [
+      "inline_visuals",
+      "exportable_pdf",
+      "exportable_images"
+    ],
+    "interactive_when_supported": true
+  },
+  "bbi_policy": {
+    "version": "0.2.0",
+    "min_prior_above_bars": {
+      "1d": 5,
+      "1w": 3
+    },
+    "parameter_origin": "Unvalidated engineering defaults; user has not specified duration",
+    "above_definition": "Completed close strictly above contemporaneous BBI",
+    "touch_reference": "Previous completed bar BBI; low <= reference <= high",
+    "close_guard": "Completed close >= previous BBI; below it withdraws support",
+    "evidence_role": "SUPPORT_ONLY",
+    "numeric_score_weight": null,
+    "sufficient_to_buy": false,
+    "allowed_technical_states": [
+      "SUPPORTING_EVIDENCE",
+      "TREND_NOT_ESTABLISHED",
+      "SUPPORT_WITHDRAWN",
+      "NO_TOUCH_SUPPORT"
+    ],
+    "decision_separation": "Overall decision states belong to a future multi-model module; BBI cannot produce BUY_CANDIDATE or confirmed-buy states."
+  }
+}

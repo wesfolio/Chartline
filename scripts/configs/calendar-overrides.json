@@ -1,0 +1,24 @@
+{
+  "version": "hk-weather-v1",
+  "scope": "Two verified historical closures only; not a forward-looking severe-weather rule",
+  "closures": [
+    {
+      "market": "HK",
+      "session_date": "2023-09-01",
+      "reason": "Typhoon Signal No.8: full-day market closure",
+      "source_url": "https://www.hkex.com.hk/News/Market-Communications/2023/2309012news?sc_lang=en",
+      "announcement_date": "2023-09-01",
+      "checked_on": "2026-09-14",
+      "historical_publication_time_verified": false
+    },
+    {
+      "market": "HK",
+      "session_date": "2023-09-08",
+      "reason": "Black rainstorm and extreme conditions: full-day market closure",
+      "source_url": "https://www.hkex.com.hk/News/Market-Communications/2023/2309083news?sc_lang=en",
+      "announcement_date": "2023-09-08",
+      "checked_on": "2026-09-14",
+      "historical_publication_time_verified": false
+    }
+  ]
+}

@@ -1,0 +1,3603 @@
+{
+  "schema_version": "1",
+  "spec_version": "0.4.0",
+  "phase": "用户需求补充：每轮理论标准图与实际标的图对照",
+  "market_priority": [
+    "CN",
+    "HK",
+    "US"
+  ],
+  "timeframes": {
+    "primary": "1d",
+    "background": "1w",
+    "intraday": "deferred_until_data_audit"
+  },
+  "live_enabled": false,
+  "empirically_validated": false,
+  "sources": [
+    {
+      "id": "A",
+      "path": "《金融市场技术分析》（逐页截图）.pdf",
+      "pages": 15,
+      "sha256": "ec2d6edc2508aef5ef8522db644e28288cd9349c6e8da181a3beccaf832d717b"
+    },
+    {
+      "id": "B",
+      "path": "《日本蜡烛图技术》（逐页截图）.pdf",
+      "pages": 21,
+      "sha256": "e72285bcc7728d450848d9f471828ff9169235b143eb5ddcefce3f393c58ff74"
+    },
+    {
+      "id": "H",
+      "path": "技术分析的逻辑-图表核对完整版.pdf",
+      "pages": 93,
+      "sha256": "c28ed39735a726bec1e8b0b1e528e305f4d21ba64bc54a711c0eea60a8ddac04"
+    }
+  ],
+  "parameters": {
+    "atr_n": {
+      "research_default": 14,
+      "origin": "工程约定",
+      "note": "波动标准化窗口；不是原文规则"
+    },
+    "sma_n": {
+      "research_default": 50,
+      "origin": "原文例举",
+      "note": "仅为候选观察周期，不代表最优"
+    },
+    "ema_n": {
+      "research_default": 20,
+      "origin": "原文例举",
+      "note": "仅为候选观察周期，不代表最优"
+    },
+    "rsi_n": {
+      "research_default": 14,
+      "origin": "原文例举",
+      "note": "按完成的bar计数，不固定解释为天"
+    },
+    "rsi_high": {
+      "research_default": 70,
+      "origin": "原文例举",
+      "note": "描述状态，不自动触发反向交易"
+    },
+    "rsi_low": {
+      "research_default": 30,
+      "origin": "原文例举",
+      "note": "描述状态，不自动触发反向交易"
+    },
+    "macd_fast": {
+      "research_default": 12,
+      "origin": "原文例举",
+      "note": "快线EMA周期"
+    },
+    "macd_slow": {
+      "research_default": 26,
+      "origin": "原文例举",
+      "note": "慢线EMA周期"
+    },
+    "macd_signal": {
+      "research_default": 9,
+      "origin": "原文例举",
+      "note": "DIF平滑周期"
+    },
+    "hist_scale": {
+      "research_default": 1,
+      "origin": "工程约定",
+      "note": "HIST=DIF-DEA；禁止与2倍版本混用"
+    },
+    "volume_n": {
+      "research_default": 20,
+      "origin": "工程假设",
+      "note": "基准只取当前bar之前的完整bar"
+    },
+    "volume_ratio": {
+      "research_default": 1.5,
+      "origin": "工程假设",
+      "note": "研究版放量阈值"
+    },
+    "pivot_k": {
+      "research_default": 2,
+      "origin": "工程假设",
+      "note": "左右各2根；确认延迟2根"
+    },
+    "pivot_max_age": {
+      "research_default": 60,
+      "origin": "工程假设",
+      "note": "趋势使用的同类拐点最老允许年龄"
+    },
+    "structure_tol_atr": {
+      "research_default": 0.1,
+      "origin": "工程假设",
+      "note": "高低点比较的最小差异"
+    },
+    "zone_width_atr": {
+      "research_default": 0.25,
+      "origin": "工程假设",
+      "note": "创建支撑阻力区域时的半宽"
+    },
+    "zone_expiry": {
+      "research_default": 60,
+      "origin": "工程假设",
+      "note": "区域创建后寿命；到期不继续沿用"
+    },
+    "break_buffer_atr": {
+      "research_default": 0.1,
+      "origin": "工程假设",
+      "note": "边界越过所需缓冲"
+    },
+    "confirm_window": {
+      "research_default": 3,
+      "origin": "工程假设",
+      "note": "候选后最多3根bar等待确认"
+    },
+    "small_body_ratio": {
+      "research_default": 0.3,
+      "origin": "工程假设",
+      "note": "B/R上限；非十字小实体"
+    },
+    "doji_ratio": {
+      "research_default": 0.1,
+      "origin": "工程假设",
+      "note": "十字候选B/R上限"
+    },
+    "short_shadow_ratio": {
+      "research_default": 0.1,
+      "origin": "工程假设",
+      "note": "短影线占R上限"
+    },
+    "long_shadow_ratio": {
+      "research_default": 0.25,
+      "origin": "工程假设",
+      "note": "纺锤及T字的长影占R下限"
+    },
+    "hammer_lower_multiple": {
+      "research_default": 2,
+      "origin": "原文明确",
+      "note": "B4-6下影至少约实体两倍；采用2为基准边界"
+    },
+    "shooting_upper_multiple": {
+      "research_default": 2,
+      "origin": "工程假设",
+      "note": "上影比例是新增定义，不能称原文明确"
+    },
+    "large_body_atr": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "长实体相对前一bar ATR的下限"
+    },
+    "engulf_expansion": {
+      "research_default": 1.5,
+      "origin": "工程假设",
+      "note": "仅作增强特征，不是吞没基本条件"
+    },
+    "star_body_fraction": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "星线实体不超过第一根实体的一半"
+    },
+    "star_penetration": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "三根组合第三根收复首根实体的最低比例"
+    },
+    "harami_fraction": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "第二实体与第一实体最大比值"
+    },
+    "pattern_span_min": {
+      "research_default": 6,
+      "origin": "工程假设",
+      "note": "双顶底/头肩候选最小跨度"
+    },
+    "pattern_span_max": {
+      "research_default": 60,
+      "origin": "工程假设",
+      "note": "双顶底/头肩候选最大跨度"
+    },
+    "shoulder_tol_atr": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "头肩两肩可容忍高度差"
+    },
+    "head_prominence_atr": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "头部超出两肩的最小高度"
+    },
+    "double_tol_atr": {
+      "research_default": 0.5,
+      "origin": "工程假设",
+      "note": "双顶底两端高度差上限"
+    },
+    "pattern_depth_atr": {
+      "research_default": 1,
+      "origin": "工程假设",
+      "note": "双顶底中间回撤/反弹最小深度"
+    },
+    "rectangle_n": {
+      "research_default": 20,
+      "origin": "工程假设",
+      "note": "滚动区间窗口"
+    },
+    "rectangle_min_atr": {
+      "research_default": 1,
+      "origin": "工程假设",
+      "note": "矩形宽度/冻结ATR下限"
+    },
+    "rectangle_max_atr": {
+      "research_default": 5,
+      "origin": "工程假设",
+      "note": "矩形宽度/冻结ATR上限"
+    },
+    "min_touch_spacing": {
+      "research_default": 3,
+      "origin": "工程假设",
+      "note": "同侧触及之间的最小bar间隔"
+    },
+    "line_breach_atr": {
+      "research_default": 0.1,
+      "origin": "工程假设",
+      "note": "线拟合过程允许的收盘穿越容差"
+    },
+    "divergence_rsi_points": {
+      "research_default": 3,
+      "origin": "工程假设",
+      "note": "对应价格拐点RSI差至少3点"
+    },
+    "research_horizons": {
+      "research_default": [
+        3,
+        5,
+        10,
+        20
+      ],
+      "origin": "工程假设",
+      "note": "事前登记的事件观察窗口，不是推荐持有期"
+    },
+    "initial_holding_bars": {
+      "research_default": 10,
+      "origin": "工程假设",
+      "note": "第一版策略对照的时间退出上限"
+    },
+    "bbi_windows": {
+      "research_default": [
+        3,
+        6,
+        12,
+        24
+      ],
+      "origin": "常用定义",
+      "note": "对日线和完整周线分别按bar计算，至少24bar；默认可配置"
+    },
+    "bbi_band_atr": {
+      "research_default": 0.2,
+      "origin": "工程假设",
+      "note": "仅为待验证观察带宽度，不代表最优买点"
+    },
+    "short_horizon_sessions": {
+      "research_default": [
+        1,
+        10
+      ],
+      "origin": "工程假设",
+      "note": "工程初始约定，可由用户覆盖"
+    },
+    "long_horizon_months": {
+      "research_default": [
+        3,
+        12
+      ],
+      "origin": "工程假设",
+      "note": "工程初始约定，以周线及更长结构观察，可由用户覆盖"
+    },
+    "bbi_prior_run_daily": {
+      "research_default": 5,
+      "origin": "工程假设，非用户指定",
+      "note": "本根之前连续日收盘严格高于同期BBI"
+    },
+    "bbi_prior_run_weekly": {
+      "research_default": 3,
+      "origin": "工程假设，非用户指定",
+      "note": "本根之前连续完整周收盘严格高于同期BBI"
+    }
+  },
+  "rules": [
+    {
+      "id": "Q01",
+      "name": "数据契约与可用时间",
+      "terms": [],
+      "source": [
+        "A13",
+        "A14",
+        "B2",
+        "B21"
+      ],
+      "handbook_pages": [
+        2,
+        6,
+        45
+      ],
+      "kind": "工程基础",
+      "status": "待实现",
+      "definition": "每行唯一键为market+symbol+timeframe+bar_end。必填OHLCV、币种、volume_unit、price_basis、source、fetched_at、available_at、is_final、calendar_version。要求L<=min(O,C)<=max(O,C)<=H且V>=0；不满足则拒绝该行。零开盘是缺失候选，不能按真实价格识别。OHLCV缺失不得用未来值回填。停牌不制造平盘bar。原始与调整价格分列，所有形态输入使用同一口径；实际执行用当时原始可交易价。",
+      "timing": "available_at=max(交易时段结束时间,数据实际可获得时间)；历史可得时间未知时登记估计规则并标记非严格时点数据。只有available_at<=as_of且is_final的bar能进入确认计算。",
+      "invalidation": "数据过期、单位未知、复权来源缺失、价格矛盾、交易日历不明时返回DATA_INSUFFICIENT。替代源须重新通过语义校验。",
+      "acceptance_tests": [
+        "零开盘拒绝；重复键拒绝；停牌不补bar；追加未来数据不改变旧快照。"
+      ],
+      "parameters": [],
+      "dependencies": [],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q02",
+      "name": "蜡烛几何与16种外观",
+      "terms": [
+        "蜡烛线",
+        "开盘价",
+        "收盘价",
+        "最高价",
+        "最低价",
+        "实体",
+        "上影线",
+        "下影线",
+        "阳线",
+        "阴线",
+        "光头线",
+        "光脚线",
+        "实体中点"
+      ],
+      "source": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "handbook_pages": [
+        10,
+        15,
+        54
+      ],
+      "kind": "基础计算",
+      "status": "待实现",
+      "definition": "B=abs(C-O)；U=H-max(O,C)；D=min(O,C)-L；R=H-L；BL=min(O,C)；BH=max(O,C)；M=(O+C)/2。epsilon=max(映射到当前价格口径的半个最小报价单位,1e-10*max(abs(O),abs(H),abs(L),abs(C),1))。C-O>epsilon为阳，O-C>epsilon为阴，其余近等价。U<=epsilon为光头；D<=epsilon为光脚。R<=epsilon单列近一字，禁止进入B/R和D/B分类。红绿颜色不参与计算。16种原图外观分解为阳阴两组的大/小、光头/脚、锤形/倒锤形及4种十字外观，允许标签重叠。",
+      "timing": "当前bar结束且价格可用时计算；只输出几何，不在本规则中命名顶部/底部。",
+      "invalidation": "出现非有限数值、无报价单位且需要精确相等判断、OHLC顺序错误则不可计算。",
+      "acceptance_tests": [
+        "同四价换配色结果相同；阳线仍可能低于昨收；B+U+D=R；零振幅不除零。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q01"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q03",
+      "name": "ATR与统一尺度",
+      "terms": [],
+      "source": [
+        "A3",
+        "A5",
+        "B4"
+      ],
+      "handbook_pages": [
+        7,
+        8,
+        12
+      ],
+      "kind": "新增尺度",
+      "status": "待实现",
+      "definition": "TR_t=max(H_t-L_t,abs(H_t-C_(t-1)),abs(L_t-C_(t-1)))。无前收盘时TR缺失。ATR首值是前n个有效TR算术平均；之后ATR_t=((n-1)*ATR_(t-1)+TR_t)/n。形态t的尺度默认S_t=ATR_(t-1)，不得包含用于判定的未来bar。多根形态用首根之前ATR冻结为S。ATR只用于标准化距离，不说明形态有效。",
+      "timing": "必须有n个有效TR及所需前收盘；不足时NA，不缩短窗口替代。",
+      "invalidation": "S<=epsilon时跳过依赖比例的规则，保留原因。",
+      "acceptance_tests": [
+        "跳空计入TR；平价ATR为0并阻断除法；初始化可手算核对。"
+      ],
+      "parameters": [
+        "atr_n"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q02"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q04",
+      "name": "SMA、EMA与动态支撑",
+      "terms": [
+        "均线",
+        "SMA",
+        "EMA",
+        "动态支撑"
+      ],
+      "source": [
+        "A13",
+        "B21"
+      ],
+      "handbook_pages": [
+        24,
+        57
+      ],
+      "kind": "确定计算",
+      "status": "待实现",
+      "definition": "SMA_n(t)=sum(C_(t-n+1)..C_t)/n。EMA以最早n个连续有效收盘的SMA初始化，alpha=2/(n+1)，之后EMA=alpha*C+(1-alpha)*EMA_prev。上涨均线状态：MA_t>MA_(t-1)+epsilon；价格位于其上：C_t>MA_t+epsilon。回调触及必须使用此前可见的MA_(t-1)作为本bar候选参考，区域按Q11冻结。初始化起点随数据快照固定。",
+      "timing": "均线收盘后可用；当前均线不能反填为开盘前已知支撑。",
+      "invalidation": "不足n根返回NA。触及均线本身不产生买入或支撑已成立结论。",
+      "acceptance_tests": [
+        "38+41+36+41+38除5=38.80；EMA种子一致；不把图内P1..P5/n当通式。"
+      ],
+      "parameters": [
+        "sma_n",
+        "ema_n"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q02"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q05",
+      "name": "RSI与极值状态",
+      "terms": [
+        "动量",
+        "震荡指标",
+        "RSI",
+        "超买／超卖"
+      ],
+      "source": [
+        "A13",
+        "A14"
+      ],
+      "handbook_pages": [
+        25
+      ],
+      "kind": "确定计算",
+      "status": "待实现",
+      "definition": "delta=C_t-C_(t-1)，gain=max(delta,0)，loss=max(-delta,0)。前n个delta的gain/loss平均为种子，之后用Wilder权重1/n更新。若平均gain=loss=0，则RSI=50（工程约定）；仅loss=0时100；仅gain=0时0；其他RSI=100-100/(1+avg_gain/avg_loss)。>=70记超买状态，<=30记超卖状态；边界归属明确为工程约定。",
+      "timing": "需n个有效差分，即至少n+1个连续有效收盘。",
+      "invalidation": "超买超卖不自动建立方向信号；未预热或缺失为NA。",
+      "acceptance_tests": [
+        "常数序列50；纯上涨100；纯下跌0；RSI不超出[0,100]。"
+      ],
+      "parameters": [
+        "rsi_n",
+        "rsi_high",
+        "rsi_low"
+      ],
+      "dependencies": [
+        "Q01"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q06",
+      "name": "MACD、交叉、柱体与零轴",
+      "terms": [
+        "MACD",
+        "DIF",
+        "DEA",
+        "柱状图",
+        "零轴",
+        "金叉／死叉"
+      ],
+      "source": [
+        "A14",
+        "B21"
+      ],
+      "handbook_pages": [
+        26
+      ],
+      "kind": "确定计算",
+      "status": "待实现",
+      "definition": "DIF=EMA_fast(C)-EMA_slow(C)；DEA=EMA_signal(DIF)，种子与Q04一致且从首个有效DIF起计算。HIST=hist_scale*(DIF-DEA)，默认scale=1。金叉：DIF_prev<=DEA_prev且DIF_t>DEA_t；死叉反之。另输出DIF的符号、HIST的符号和abs(HIST)的变化，禁止把负柱缩短称作已经金叉。对于一般均线交叉记录line_a/line_b，不与MACD混名。",
+      "timing": "默认12/26/9，至少34根收盘才具备首个DEA；交叉另需前一根有效DEA。",
+      "invalidation": "缺任一输入为NA；柱色由展示模板决定，不是计算输入。",
+      "acceptance_tests": [
+        "所有收盘加同一常数DIF不变；1倍与2倍柱体不能直接比较幅度；交叉与过零可不同日。"
+      ],
+      "parameters": [
+        "macd_fast",
+        "macd_slow",
+        "macd_signal",
+        "hist_scale"
+      ],
+      "dependencies": [
+        "Q04"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q07",
+      "name": "成交量与四种量价状态",
+      "terms": [
+        "成交量",
+        "量价关系"
+      ],
+      "source": [
+        "A5",
+        "B8"
+      ],
+      "handbook_pages": [
+        9,
+        14,
+        51
+      ],
+      "kind": "研究特征",
+      "status": "待实现",
+      "definition": "Vbase_t=mean(V_(t-n)..V_(t-1))；RVOL=V_t/Vbase_t；Vbase=0时NA。放量研究阈值RVOL>=volume_ratio。原四组合另用C_t-C_(t-1)及V_t-V_(t-1)的符号交叉得到价升量升等，等于零单列不强分四象限。两种基准分别命名，不混用。分钟量只能与相同交易时段的历史量比较，第一版不启用分钟放量。",
+      "timing": "只比较已完成bar；收盘前当日累计量不能与全日均量直接比较。",
+      "invalidation": "拆合股导致股数口径改变时调整历史量基准或断开窗口；单位不明、零基准、有效样本不足时禁用量特征。",
+      "acceptance_tests": [
+        "窗口排除当天；股与手统一后结果相同；横盘等量不强判上涨确认。"
+      ],
+      "parameters": [
+        "volume_n",
+        "volume_ratio"
+      ],
+      "dependencies": [
+        "Q01"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q08",
+      "name": "不重画的已确认拐点",
+      "terms": [],
+      "source": [
+        "A1",
+        "A2",
+        "A4",
+        "A6",
+        "A7",
+        "A8"
+      ],
+      "handbook_pages": [
+        5,
+        8,
+        20,
+        21
+      ],
+      "kind": "研究基础",
+      "status": "待实现",
+      "definition": "候选高点i须H_i严格高于[i-k,i+k]其他全部H；低点须L_i严格低于同窗口其他全部L。同价平台不选点，平台改进另开版本。同根同时符合高低点时标记AMBIGUOUS并从结构序列排除。i到i+k只作为候选；确认事件存pivot_time=i、known_at=i+k、price、kind。确认后不可删除或改价。连续同类点可存在，各形态明确如何选用。",
+      "timing": "known_at取确认bar的available_at。不得把已确认标记画在i并宣称i当时已知。",
+      "invalidation": "窗口缺失、跨不明停牌或非最终bar时不确认。更换k必须新规则版本。",
+      "acceptance_tests": [
+        "[1,2,5,3,2]的中间高点直到第五根才能确认；加新bar不改历史确认事件；平台与双向点单列。"
+      ],
+      "parameters": [
+        "pivot_k"
+      ],
+      "dependencies": [
+        "Q01"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q09",
+      "name": "趋势、回调与反转状态",
+      "terms": [
+        "趋势",
+        "市场结构",
+        "上升趋势",
+        "下降趋势",
+        "横盘",
+        "HH",
+        "HL",
+        "LH",
+        "LL",
+        "主要趋势",
+        "次级趋势",
+        "短期趋势",
+        "回调",
+        "反转"
+      ],
+      "source": [
+        "A1",
+        "A2",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "handbook_pages": [
+        4,
+        5,
+        6,
+        11,
+        51
+      ],
+      "kind": "研究状态",
+      "status": "待实现",
+      "definition": "在as_of之前已确认的高点取最近两个、低点取最近两个；均须不老于pivot_max_age。delta=structure_tol_atr*S_asof。高点差>delta为HH，<-delta为LH，中间为EQUAL；低点同理为HL/LL。HH+HL记UP，LH+LL记DOWN，其余先记MIXED；只有Q26明确区间成立才标RANGE。证据不足UNKNOWN。大周期UP而小周期DOWN称回调候选；只有小周期转UP且大周期仍UP才称小周期改善，不能称整个大周期反转。",
+      "timing": "蜡烛组合的前置趋势只取组合首根之前可见的趋势快照。趋势状态每bar可更新，但旧报告不可回填。",
+      "invalidation": "关键结构不再满足时输出改变，不依赖未来走势倒推旧形态名称。",
+      "acceptance_tests": [
+        "HH+LL不得命名上涨；混合状态不是必然横盘；历史趋势不使用尚未确认右侧拐点。"
+      ],
+      "parameters": [
+        "structure_tol_atr",
+        "pivot_max_age"
+      ],
+      "dependencies": [
+        "Q03",
+        "Q08"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q10",
+      "name": "跨市场多周期对齐",
+      "terms": [
+        "多周期"
+      ],
+      "source": [
+        "A2",
+        "A14",
+        "A15",
+        "B2",
+        "B11",
+        "B19"
+      ],
+      "handbook_pages": [
+        6,
+        27
+      ],
+      "kind": "工程约束",
+      "status": "待实现",
+      "definition": "第一版日线触发、完整周线背景。周线按各交易所真实交易日聚合O首/H最大/L最小/C末/V求和；未结束周不得冒充完整周。日线as_of只向后连接available_at<=as_of的最近完整周线。股票代码包含市场；同公司A/H股也是两条不同序列。香港半日市、美国夏令时、集合竞价纳入各自日历。4小时线不是跨市场通用周期，暂不启用。",
+      "timing": "跨市场扫描对每只证券分别标最新完整交易日，不把同一北京时间当三地同时收盘。",
+      "invalidation": "日历、时区、交易时段不清楚时返回DATA_INSUFFICIENT。",
+      "acceptance_tests": [
+        "周三分析看不到本周五周线；美股夏令时切换不产生重复bar；A/H不混合成交量。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q01",
+        "Q09"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q11",
+      "name": "支撑阻力、位置与区域",
+      "terms": [
+        "位置",
+        "支撑",
+        "阻力",
+        "角色互换",
+        "回测"
+      ],
+      "source": [
+        "A3",
+        "A4",
+        "B8",
+        "B9",
+        "B20"
+      ],
+      "handbook_pages": [
+        7,
+        19,
+        51,
+        55,
+        57
+      ],
+      "kind": "研究结构",
+      "status": "待实现",
+      "definition": "每个已确认低/高拐点分别创建支撑/阻力中心P，创建时冻结S及区域[P-zone_width_atr*S,P+zone_width_atr*S]。v0.1不聚类、不随未来移动边界。形态组合极值、窗口边界、均线可另建source_type区域。分析bar t只能使用t开始前已知区域；与[L_t,H_t]相交记触及。近邻排名按abs(C_t-P)/S_t，再按创建时间倒序及稳定zone_id排序。多个区域全部保留来源。",
+      "timing": "低点i的区域最早在i+k确认之后创建，不能用于证明i当时已经触及该支撑。",
+      "invalidation": "到期或收盘越过远端再加break_buffer_atr*冻结S时失效。角色互换必须走Q13突破后回测流程。",
+      "acceptance_tests": [
+        "不使用未来低点创建支撑；冻结区域不随ATR后续变化；触及与确认分开。"
+      ],
+      "parameters": [
+        "zone_width_atr",
+        "zone_expiry",
+        "break_buffer_atr"
+      ],
+      "dependencies": [
+        "Q03",
+        "Q08"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q12",
+      "name": "趋势线与穿线警告",
+      "terms": [
+        "趋势线"
+      ],
+      "source": [
+        "A4",
+        "A5"
+      ],
+      "handbook_pages": [
+        8,
+        51
+      ],
+      "kind": "研究结构",
+      "status": "待实现",
+      "definition": "UP时用最近两个已确认HL低点连直线；DOWN时用最近两个已确认LH高点。横坐标用交易bar序号，line(x)=p1+(p2-p1)*(x-i1)/(i2-i1)。第二点确认时冻结线版本；中间已知收盘若在错误一侧超过line_breach_atr*S则拒绝该线。只有确认之后bar可产生穿线事件；新拐点创建新线ID，旧事件不回画。",
+      "timing": "第二点known_at之后才可作为可交易时点的既有边界。穿线bar收盘后发警告。",
+      "invalidation": "穿线不直接等于反转；反转用Q09结构改变另行记录。",
+      "acceptance_tests": [
+        "不拿两个尚未确认低点画已知支撑；线变化有新ID；单次穿线不强转DOWN。"
+      ],
+      "parameters": [
+        "line_breach_atr"
+      ],
+      "dependencies": [
+        "Q08",
+        "Q09"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q13",
+      "name": "突破、回测、假突破及生命周期",
+      "terms": [
+        "突破",
+        "假突破",
+        "确认",
+        "失效条件"
+      ],
+      "source": [
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A15",
+        "B11",
+        "B19"
+      ],
+      "handbook_pages": [
+        8,
+        9,
+        27,
+        52
+      ],
+      "kind": "研究状态机",
+      "status": "待实现",
+      "definition": "边界须在bar开始前已知，冻结方向、边界函数和S。向上突破：C_t>upper(t)+buffer*S；向下对称。盘中越界而收盘未越仅记INTRABAR_PROBE。收盘突破事件为BREAKOUT，不等于策略已确认。接下来W根内：上破后价格区间触及冻结边界带且收盘仍高于原upper，记RETEST_CONFIRMED；下破对称。收盘回到原区间内记FAILED_BREAKOUT。",
+      "timing": "通用蜡烛候选使用CREATED→CONFIRMED/INVALIDATED/EXPIRED终态；原图BREAKOUT与交易候选CONFIRMED分字段。蜡烛确认候选：后W根首个C>signal_high+buffer*S（看涨）或C<signal_low-buffer*S（看跌）。",
+      "invalidation": "在等待期收盘越过组合反向极值及缓冲即INVALIDATED；同一bar若确认与失效冲突，失效优先；W到期未满足即EXPIRED。终态后只能产生新ID，不能回活。",
+      "acceptance_tests": [
+        "盘中上破收回不是收盘突破；等待第三根期间不提前确认；期限边界含第W根；重复运行不重复发事件。"
+      ],
+      "parameters": [
+        "break_buffer_atr",
+        "confirm_window"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q03"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q14",
+      "name": "小实体、十字与纺锤",
+      "terms": [
+        "纺锤线",
+        "十字线",
+        "T字线",
+        "倒T字线",
+        "一字线"
+      ],
+      "source": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "handbook_pages": [
+        10,
+        11,
+        54
+      ],
+      "kind": "研究外观",
+      "status": "待实现",
+      "definition": "R<=epsilon为NEAR_FOUR_PRICE；否则B/R<=doji_ratio为DOJI。非十字且B/R<=small_body_ratio为SMALL_BODY。纺锤须SMALL_BODY且U/R>=long_shadow_ratio且D/R>=long_shadow_ratio。T字须DOJI、U/R<=short_shadow_ratio且D/R>=long_shadow_ratio；倒T互换U/D。优先判一字，再十字，再非十字小实体。大实体另按B>=large_body_atr*S定义，不把“小”的补集全叫“大”。",
+      "timing": "当前收盘后，仅输出外观标签；独立于多空方向。",
+      "invalidation": "不直接产生反转信号；未知报价精度或R无效则不可分类。",
+      "acceptance_tests": [
+        "一字不进入十字除法；边界<=归属固定；低波动大比例实体未必是ATR意义长实体。"
+      ],
+      "parameters": [
+        "doji_ratio",
+        "small_body_ratio",
+        "short_shadow_ratio",
+        "long_shadow_ratio",
+        "large_body_atr"
+      ],
+      "dependencies": [
+        "Q02",
+        "Q03"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q15",
+      "name": "锤子线与上吊线",
+      "terms": [
+        "锤子线",
+        "上吊线"
+      ],
+      "source": [
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "handbook_pages": [
+        12,
+        54
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "非十字SMALL_BODY，D>=hammer_lower_multiple*B，U/R<=short_shadow_ratio，形成UMBRELLA_SHAPE。以前一bar可见趋势DOWN命名HAMMER，UP命名HANGING_MAN，MIXED/UNKNOWN只保留外观。实体颜色不限制。原文明确长下影约2倍，其余小/短数值为工程候选。锤子看涨、上吊看跌分别交Q13确认，signal_high/low取该根H/L。",
+      "timing": "形态在t收盘可见；如采用t+1确认，确认前只能叫候选。",
+      "invalidation": "Q13反向极值失守或期限到期；未来是否涨跌不得反改形态名。",
+      "acceptance_tests": [
+        "长下影比1.9不满足2；颜色互换外观一致；同形在UP与DOWN名字不同；十字不误判锤子。"
+      ],
+      "parameters": [
+        "hammer_lower_multiple",
+        "small_body_ratio",
+        "short_shadow_ratio"
+      ],
+      "dependencies": [
+        "Q09",
+        "Q13",
+        "Q14"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q16",
+      "name": "流星与倒锤子线",
+      "terms": [
+        "流星",
+        "倒锤子线"
+      ],
+      "source": [
+        "B16",
+        "B17"
+      ],
+      "handbook_pages": [
+        13,
+        56
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "非十字SMALL_BODY，U>=shooting_upper_multiple*B，D/R<=short_shadow_ratio。前趋势UP命名SHOOTING_STAR，DOWN命名INVERTED_HAMMER，其他只留LONG_UPPER_SHAPE。原图未明确影线数值比例；2倍属于研究假设。颜色不限制。信号方向前者看跌、后者看涨；signal_high/low取本根。",
+      "timing": "t收盘产生候选，之后Q13独立确认。",
+      "invalidation": "反向极值或等待期限按Q13；长上影本身不代表已经反转。",
+      "acceptance_tests": [
+        "移至下跌背景仅改变语境名；不得把2倍标成原文规定。"
+      ],
+      "parameters": [
+        "shooting_upper_multiple",
+        "small_body_ratio",
+        "short_shadow_ratio"
+      ],
+      "dependencies": [
+        "Q09",
+        "Q13",
+        "Q14"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q17",
+      "name": "吞没与组合极值",
+      "terms": [
+        "吞没形态",
+        "看涨吞没",
+        "看跌吞没"
+      ],
+      "source": [
+        "B7",
+        "B8"
+      ],
+      "handbook_pages": [
+        14,
+        55
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "第一根a、第二根b。看涨：a阴、b阳、BL_b<=BL_a+epsilon、BH_b>=BH_a-epsilon，且至少一端超出epsilon；前趋势取a之前为DOWN。看跌对称且前趋势UP。仅包含实体，影线不必覆盖。严格扩大避免两根完全相等也判强吞没；此为工程边界。增强字段B_b/B_a>=engulf_expansion、RVOL_b、先前趋势长度分别输出，不硬性加入基本识别。signal_high=max(H_a,H_b)，signal_low=min(L_a,L_b)。",
+      "timing": "b收盘生成候选；极值区域此后才可成为新支撑/阻力，不能用于证明a出现前已有位置。",
+      "invalidation": "Q13确认；看跌组合后收盘越过组合最高即反证，不强守旧标签。",
+      "acceptance_tests": [
+        "覆盖实体但未覆盖影线应通过；只覆盖影线不覆盖实体失败；两根同色失败；组合极值不能永远只取第二根。"
+      ],
+      "parameters": [
+        "engulf_expansion"
+      ],
+      "dependencies": [
+        "Q02",
+        "Q07",
+        "Q09",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q18",
+      "name": "乌云盖顶与刺透",
+      "terms": [
+        "乌云盖顶",
+        "刺透形态"
+      ],
+      "source": [
+        "B9",
+        "B10"
+      ],
+      "handbook_pages": [
+        15,
+        55
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "乌云严格版：前趋势UP；a为长阳B_a>=large_body_atr*S；b阴；O_b>H_a+epsilon；O_a+epsilon<C_b<M_a-epsilon，未全吞没。刺透实体版：前趋势DOWN；a长阴；b阳；M_a+epsilon<C_b<O_a-epsilon，且O_b<C_a-epsilon。刺透严格扩展版另要求O_b<L_a-epsilon，必须单独pattern_version：该开盘限制不是笔记此页完整给出的条件。中点等于边界时单列MIDPOINT_TOUCH，不算严格穿过。",
+      "timing": "b收盘后识别；后续确认按Q13，使用两根组合极值。",
+      "invalidation": "全实体覆盖转入Q17；原方向失效或超时按Q13。",
+      "acceptance_tests": [
+        "中点未过不能判刺透；高开仅超过前收但未超过前高不能算严格乌云；不同刺透版本不得混合回测。"
+      ],
+      "parameters": [
+        "large_body_atr"
+      ],
+      "dependencies": [
+        "Q02",
+        "Q09",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q19",
+      "name": "待入、切入、插入线的边界",
+      "terms": [
+        "待入／切入／插入线"
+      ],
+      "source": [
+        "B10"
+      ],
+      "handbook_pages": [
+        15,
+        55
+      ],
+      "kind": "人工复核",
+      "status": "部分可计算；子型人工复核",
+      "definition": "原缩略图不能可靠支持三个近似形态完整的精确阈值。只计算通用收复率recovery=(C_b-C_a)/(O_a-C_a)，适用于a阴且分母>epsilon；b阳、0<recovery<=0.5记INCOMPLETE_RECOVERY，recovery<=0另记未收复。该数值不自动分配待入/切入/插入的具体名称。",
+      "timing": "b收盘可输出收复率；具体子型留待独立定义资料与原图复核。",
+      "invalidation": "三个子名不得自动交易，未定义精度不填伪默认值。",
+      "acceptance_tests": [
+        "恢复0.4不可当理想刺透；同恢复率仍不能强分三子型。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q02"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q20",
+      "name": "星线、启明星与黄昏星",
+      "terms": [
+        "星线",
+        "实体跳空",
+        "十字星线",
+        "启明星",
+        "黄昏星",
+        "十字启明星",
+        "十字黄昏星"
+      ],
+      "source": [
+        "B12",
+        "B13",
+        "B14",
+        "B15"
+      ],
+      "handbook_pages": [
+        16,
+        17,
+        56
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "a为长实体，b满足B_b<=star_body_fraction*B_a，实体向下隔开为BH_b<BL_a-epsilon，向上为BL_b>BH_a+epsilon，影线可重叠。b为DOJI则十字星；未出现c时只是两根星线候选。启明星：a阴、前趋势DOWN、b向下隔开、c阳，(C_c-C_a)/B_a>=star_penetration。黄昏星反向，(C_a-C_c)/B_a>=star_penetration。c与b间不另强制跳空，避免混入弃婴规则；b颜色不限。",
+      "timing": "星线最早b收盘；三根组合最早c收盘。Q13额外确认不得挪回b。",
+      "invalidation": "Q13对三根总极值做反证与超时管理；两根未完成不能记成三根历史成功样本。",
+      "acceptance_tests": [
+        "实体隔开但影线重叠可为星线；缺第三根不成立完整启明星；颜色不限；恢复阈值明确是工程参数。"
+      ],
+      "parameters": [
+        "large_body_atr",
+        "star_body_fraction",
+        "star_penetration"
+      ],
+      "dependencies": [
+        "Q02",
+        "Q09",
+        "Q13",
+        "Q14"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q21",
+      "name": "弃婴顶部与底部",
+      "terms": [
+        "弃婴顶部",
+        "弃婴底部"
+      ],
+      "source": [
+        "B15",
+        "B16"
+      ],
+      "handbook_pages": [
+        17,
+        56
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "先满足Q20的十字启明星/黄昏星。弃婴底部还要求H_b<min(L_a,L_c)-epsilon；顶部要求L_b>max(H_a,H_c)+epsilon。两侧隔离对象包括全部影线。严格原型单独标记，不将连续交易中只实体隔开的近似结构放宽后仍沿用同名。",
+      "timing": "c收盘之后才知两侧隔离；不能在b处发布完整弃婴。",
+      "invalidation": "任一影线接触即不满足严格弃婴，但可保留对应普通星线标签。",
+      "acceptance_tests": [
+        "影线触及边界失败；两侧隔离真例通过；除权产生的机械空白先由数据事件过滤。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q01",
+        "Q20"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q22",
+      "name": "孕线与十字孕线",
+      "terms": [
+        "孕线",
+        "十字孕线"
+      ],
+      "source": [
+        "B18"
+      ],
+      "handbook_pages": [
+        18,
+        57
+      ],
+      "kind": "研究形态",
+      "status": "待实现",
+      "definition": "a为长实体，BL_b>=BL_a-epsilon且BH_b<=BH_a+epsilon，B_b<=harami_fraction*B_a。a前趋势UP或DOWN；b颜色不限。b=DOJI另标HARAMI_CROSS；原图包含的是实体，允许影线突出。UP背景输出走弱候选，DOWN背景输出改善候选；MIXED仅外观。",
+      "timing": "b收盘识别；后续Q13确认，使用两根组合极值。",
+      "invalidation": "含实体失败即不算孕线；收缩不自动等于反向趋势。",
+      "acceptance_tests": [
+        "同色也可孕线；第二根影线超出第一根但实体被包仍可通过；吞没与孕线方向相反。"
+      ],
+      "parameters": [
+        "large_body_atr",
+        "harami_fraction"
+      ],
+      "dependencies": [
+        "Q02",
+        "Q09",
+        "Q13",
+        "Q14"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q23",
+      "name": "窗口、进入、回补与收盘失效",
+      "terms": [
+        "窗口",
+        "向上窗口",
+        "向下窗口",
+        "回补"
+      ],
+      "source": [
+        "B20"
+      ],
+      "handbook_pages": [
+        19,
+        57
+      ],
+      "kind": "研究结构",
+      "status": "待实现",
+      "definition": "a、b相邻完整bar：L_b>H_a+epsilon为上窗[H_a,L_b]；H_b<L_a-epsilon为下窗[H_b,L_a]。冻结窗口。仅后续j>b检查：上窗L_j<=窗上端记进入，L_j<=窗下端记完整回补，C_j<窗下端-epsilon记收盘失效；下窗H_j>=窗下端记进入，H_j>=窗上端记完整回补，C_j>窗上端+epsilon记收盘失效。精确触及边界不等于收盘越界。",
+      "timing": "b收盘创建；不能用b自己的L=窗上端宣布已回补。窗口回补状态可累积，收盘失效另列。",
+      "invalidation": "公司行动导致的机械缺口排除或单列CORPORATE_ACTION；无可靠事件与价格口径时窗口规则停用。窗口超过zone_expiry失去活跃状态，但历史事件保留。",
+      "acceptance_tests": [
+        "低点穿过窗下端而收盘收回：已回补但未收盘失效；创建bar不回补；除权不误识别。"
+      ],
+      "parameters": [
+        "zone_expiry"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q02"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q24",
+      "name": "头肩顶底与编号观察点",
+      "terms": [
+        "头肩顶",
+        "头肩底",
+        "右肩",
+        "颈线"
+      ],
+      "source": [
+        "A6",
+        "A7"
+      ],
+      "handbook_pages": [
+        20,
+        52
+      ],
+      "kind": "研究候选结构",
+      "status": "待实现",
+      "definition": "使用最近5个连续、交替且已确认拐点。顶为H1,L1,H2,L2,H3；底完全镜像。顶要求H2-max(H1,H3)>=head_prominence_atr*S，abs(H1-H3)<=shoulder_tol_atr*S，span在[min,max]内，前置背景UP；S取首点之前ATR。颈线连L1,L2并冻结版本。右肩H3确认后才创建完整候选，确认后若首次收盘下破neck(t)-buffer*S则记完成；底反向。候选创建时已经越线者标LATE_RECOGNIZED，不回填突破。",
+      "timing": "A6卖点1/A7买点1映射Q12较早穿线警告，2映射颈线突破，3映射Q13回测；三种不同信息时点分别记事件，不能拿后来的右肩证明点1。",
+      "invalidation": "未突破时收盘越过头部极值及缓冲则失效；超过confirm_window未突破则过期。肩部量柱顺序只作特征，不为必要条件。",
+      "acceptance_tests": [
+        "右肩未确认不可宣告完成；量排序不符仍可有几何候选；颈线前后角色分开；迟识别不伪造过去入场。"
+      ],
+      "parameters": [
+        "head_prominence_atr",
+        "shoulder_tol_atr",
+        "pattern_span_min",
+        "pattern_span_max",
+        "confirm_window"
+      ],
+      "dependencies": [
+        "Q08",
+        "Q09",
+        "Q12",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q25",
+      "name": "双顶与双底",
+      "terms": [
+        "双顶",
+        "双底"
+      ],
+      "source": [
+        "A8"
+      ],
+      "handbook_pages": [
+        21,
+        52
+      ],
+      "kind": "研究候选结构",
+      "status": "待实现",
+      "definition": "最近3个连续交替已确认拐点：顶H1,L1,H2，底L1,H1,L2。顶abs(H1-H2)<=double_tol_atr*S，min(H1,H2)-L1>=pattern_depth_atr*S；底反向；S冻结为首点前ATR。span在[min,max]内，前置背景顶UP/底DOWN。颈线取中间反向拐点水平价；第二端确认后创建候选，再通过Q13收盘突破。",
+      "timing": "第二顶/底须已确认；若创建时已突破则标LATE_RECOGNIZED，不假定当时可下单。",
+      "invalidation": "反向收盘越过两端极值加缓冲，或等待期到期则失效/过期。两个端点相近本身不足以完成形态。",
+      "acceptance_tests": [
+        "只有两低点无中间高点不能确认；1ATR深度边界可验证；第二低点事后确认不可回填。"
+      ],
+      "parameters": [
+        "double_tol_atr",
+        "pattern_depth_atr",
+        "pattern_span_min",
+        "pattern_span_max",
+        "confirm_window"
+      ],
+      "dependencies": [
+        "Q08",
+        "Q09",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q26",
+      "name": "矩形与明确横盘",
+      "terms": [
+        "矩形"
+      ],
+      "source": [
+        "A11",
+        "A12"
+      ],
+      "handbook_pages": [
+        22,
+        53
+      ],
+      "kind": "研究区间",
+      "status": "待实现",
+      "definition": "在t收盘构建最近n根的候选：upper=max(H)，lower=min(L)，S=ATR_(t-n)。宽度/S介于rectangle_min_atr与rectangle_max_atr；窗口内已确认高拐点至少2个接近upper、低拐点至少2个接近lower，距离均<=zone_width_atr*S，同侧相隔>=min_touch_spacing。创建后冻结上下界和组成窗口，t+1起监测突破。重叠窗口只保留最早活跃候选，同方向突破只发一次。",
+      "timing": "t仅建立区间，不能拿包含突破bar的滚动最高价去判断同根突破。",
+      "invalidation": "突破后Q13管理；候选超过zone_expiry过期。不满足区间不能把混合趋势强称横盘。",
+      "acceptance_tests": [
+        "突破线排除突破bar；上下各一触不足；冻结边界不随新高追涨。"
+      ],
+      "parameters": [
+        "rectangle_n",
+        "rectangle_min_atr",
+        "rectangle_max_atr",
+        "zone_width_atr",
+        "min_touch_spacing",
+        "zone_expiry"
+      ],
+      "dependencies": [
+        "Q03",
+        "Q08",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q27",
+      "name": "旗形与三角旗",
+      "terms": [
+        "持续形态",
+        "旗形",
+        "旗杆",
+        "牛旗",
+        "熊旗",
+        "三角旗"
+      ],
+      "source": [
+        "A9",
+        "A10",
+        "A11"
+      ],
+      "handbook_pages": [
+        22,
+        53
+      ],
+      "kind": "研究设计待标注",
+      "status": "人工标注；自动识别待研究",
+      "definition": "必须同时具备先行快速单向旗杆与其后的较短整理；牛旗旗身平行/略向下，熊旗相反，三角旗边界收敛。记录待定义字段pole_start/end、move_atr、duration、retracement、upper/lower_slope、parallel_error、breakout_time。原图不足以确定快速、较短、略微的数值。v0.1只接受人工标注边界；输入人工标注的known_at后，Q13可计算未来突破，不自动识别旗形。",
+      "timing": "人工标注只在实际标注时间之后有效；在完整历史图上标注的形态仅用于识别评测，不能当因果回测信号。",
+      "invalidation": "未有标注一致性及前视约束验收前不进入自动扫描。a/b/c字母不证明旗杆与目标等长。MU图缺完整坐标，不复原历史收益。",
+      "acceptance_tests": [
+        "无旗杆的三角形不叫三角旗；标注晚于突破不能回填；人工分歧须保留。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q08",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q28",
+      "name": "楔形的几何与方向",
+      "terms": [
+        "楔形"
+      ],
+      "source": [
+        "A3",
+        "A4",
+        "A9"
+      ],
+      "handbook_pages": [
+        8,
+        23,
+        51,
+        53
+      ],
+      "kind": "研究设计待标注",
+      "status": "人工边界；自动识别待研究",
+      "definition": "从两个已知边界函数计算slope_upper、slope_lower及width(t)。上升楔形两斜率>0且下边界更陡，下降楔形两斜率<0且上边界下降更快；窗口内width始终>0并变窄。只输出几何倾斜方向，后续交易方向取实际突破。边界点选择、噪声容忍和最少触及次数原文不足，v0.1使用人工提供的因果边界，不自动猜边界。",
+      "timing": "边界known_at之后监测，画线未来交点不代表价格未来到达该点。",
+      "invalidation": "边界交叉、未收敛或人工标注晚于事件则不可用。",
+      "acceptance_tests": [
+        "上升楔形不自动看涨；下降楔形不自动看跌；宽度负值拒绝。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q12",
+        "Q13"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q29",
+      "name": "总览中仅列名的结构",
+      "terms": [
+        "三重顶／底",
+        "圆弧顶／底",
+        "喇叭形",
+        "菱形",
+        "对称三角形",
+        "上升／下降三角形"
+      ],
+      "source": [
+        "A9"
+      ],
+      "handbook_pages": [
+        23,
+        53
+      ],
+      "kind": "人工复核",
+      "status": "人工复核；不自动识别",
+      "definition": "三重顶底、圆弧、喇叭、菱形、对称及上升/下降三角形保留taxonomy标签、原图位置和人工备注。不得从缩略图直接填入完整交易规则。特别保留原图“斜楔三角形”等标签的歧义，不直接等同标准三角形或三角旗。与Q27/Q28共同覆盖A9两栏20个外观；顶部/底部与上涨/下跌对应均保留。",
+      "timing": "仅用于解释与人工归类；自动scan返回UNSUPPORTED_DEFINITION及原页链接。",
+      "invalidation": "补齐独立定义、因果检测和标注测试前不产生自动信号。",
+      "acceptance_tests": [
+        "总览不能全归持续形态；遇未支持名称明确说明，不用类似已支持形态替代。"
+      ],
+      "parameters": [],
+      "dependencies": [],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q30",
+      "name": "RSI背离与价格结构",
+      "terms": [
+        "背离",
+        "顶部背离",
+        "底部背离"
+      ],
+      "source": [
+        "A14"
+      ],
+      "handbook_pages": [
+        25,
+        29
+      ],
+      "kind": "研究特征",
+      "status": "待实现",
+      "definition": "以最近两个已确认价格高点i,j为锚，顶背离要求H_j-H_i>structure_tol_atr*S且RSI_j<=RSI_i-divergence_rsi_points；底背离反向。RSI取与价格拐点同一bar的值，不另从未来窗口寻找最有利的指标极值。该版本命名PRICE_PIVOT_ALIGNED_RSI_DIVERGENCE。若改为指标独立拐点匹配需另立规则，不混合。",
+      "timing": "j+k确认后才能发布，known_at取价格拐点确认与RSI可用时间最大值。",
+      "invalidation": "只输出警告；不自动反向持仓。下一对拐点形成后发布新记录，旧背离不消失。",
+      "acceptance_tests": [
+        "价格创新高而RSI仍创新高不算背离；背离不等于趋势DOWN；不能把j+k事件记在j入场。"
+      ],
+      "parameters": [
+        "structure_tol_atr",
+        "divergence_rsi_points"
+      ],
+      "dependencies": [
+        "Q05",
+        "Q08"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q31",
+      "name": "量度参考与目标边界",
+      "terms": [
+        "量度目标"
+      ],
+      "source": [
+        "A8",
+        "A12"
+      ],
+      "handbook_pages": [
+        21,
+        52,
+        53
+      ],
+      "kind": "研究测量",
+      "status": "待实现",
+      "definition": "双顶高度=(H1+H2)/2-neck，目标=breakout_boundary-height；双底镜像。矩形高度=upper-lower，上破目标=upper+height，下破=lower-height。均用候选创建时冻结价格口径；用两个端点均值为工程约定。头肩、旗形与三角旗v0.1不默认套用等幅目标，原图未提供足够数值执行定义。",
+      "timing": "对应Q25/Q26突破事件可用后输出reference_target；它是参考价格字段，不是预测概率或必达价。",
+      "invalidation": "原候选失效时关联目标失效；将目标作为退出规则必须在Q33事前另选实验。",
+      "acceptance_tests": [
+        "双底高度映射方向正确；目标与支撑都用同一价格口径；不能把图中停利字样当成交保证。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q25",
+        "Q26"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q32",
+      "name": "分层融合与首批研究策略",
+      "terms": [],
+      "source": [
+        "A15",
+        "B11",
+        "B19"
+      ],
+      "handbook_pages": [
+        4,
+        27,
+        28,
+        29
+      ],
+      "kind": "研究组合",
+      "status": "待实现",
+      "definition": "F1趋势回调：最近完整周线UP；信号首根前日线DOWN；在首根之前已存在且未失效的支撑区域被组合触及；Q15锤子或Q17看涨吞没候选，经Q13确认。F2区间突破：Q26冻结矩形向上收盘突破；周线非DOWN；分别研究基础版、加RVOL版、等回测版。F3高位风险：UP背景中看跌蜡烛或Q30顶背离，输出持仓复核事件，不等同做空。每条支持/反对证据带规则ID及时间，不做主观加权总分。",
+      "timing": "融合known_at=max(所有必要证据known_at)；日线确认时重新检查此前区域仍有效。周线/日线数据只截至当时。",
+      "invalidation": "必需条件缺失则NO_SETUP或DATA_INSUFFICIENT。F1已触及支撑但支撑失效时不因锤子仍在而继续通过。",
+      "acceptance_tests": [
+        "删去成交量特征做消融比较；MACD/EMA不当独立票；A/H同公司分别评估。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q13",
+        "Q15",
+        "Q17",
+        "Q26",
+        "Q30"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q33",
+      "name": "交易模拟与市场配置",
+      "terms": [],
+      "source": [
+        "A5",
+        "A15",
+        "B11",
+        "B19"
+      ],
+      "handbook_pages": [
+        27,
+        30,
+        50
+      ],
+      "kind": "工程新增",
+      "status": "契约已定；市场费用与账户参数待配置",
+      "definition": "第一实验限现金多头。确认在收盘后，入场最早为下一可交易bar开盘加模型成本；超出最大允许追价距离则取消，该距离须在实验登记中给出，缺失则不能回测成交。退出版本分开：时间退出max_bars；结构收盘失效后下一可交易时点；目标/止损盘中触发作为独立版本。现金、手数、汇率、费用、滑点、停牌、价格限制、可卖数量均按market_profile及生效日期计算。所有金额参数未提供则不输出真实仓位。",
+      "timing": "A股新买可卖时间、港股交易/交收区别、美股账户限制分别建档。券商/通道未知时返回EXECUTION_PROFILE_REQUIRED。不得将当日最终收盘信号按同收盘成交。",
+      "invalidation": "止损不是保证成交价。跳空越过触发价按下一可得成交模型处理。单bar止盈止损同时触及且无细粒度证据，标AMBIGUOUS，分别算保守/乐观界限并报告，不挑有利路径。",
+      "acceptance_tests": [
+        "当日不可卖的头寸不模拟即时止损成交；涨停触及不等于买得到；币种换算日期固定；现金不得隐性为负。"
+      ],
+      "parameters": [
+        "initial_holding_bars"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q13",
+        "Q31",
+        "Q32"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q34",
+      "name": "事件研究、回测与验收",
+      "terms": [],
+      "source": [
+        "A14",
+        "A15",
+        "B11",
+        "B19"
+      ],
+      "handbook_pages": [
+        30,
+        31,
+        50
+      ],
+      "kind": "工程新增",
+      "status": "待实现",
+      "definition": "事件收益从signal_known_at之后的下一可交易开盘起算，观察h个交易bar的结束收盘，h列表事前固定；同时记录MAE/MFE和缺失/退市情况。不同形态重叠事件按symbol+active_position去重，相关性按股票/日期分组评估。训练/验证/最终测试按时间切分；分割处剔除标签或持仓跨边界的训练事件，并留覆盖最大持有期的间隔。测试集只评估一次；修改规则后记录新试验而非重写旧结果。",
+      "timing": "历史股票池必须有当时成员及退市覆盖，缺失则只允许声明幸存者样本研究。事件数据快照、参数、费用、版本、基准均写run_manifest。所有扫描即使无信号也留日志。",
+      "invalidation": "不预设收益承诺。投产门槛：数据/因果/执行测试通过；费用后样本外收益及回撤符合预先风险要求；不确定范围与有效样本可评估；相邻参数、时期和市场结果有解释；模拟跟踪通过。未满足任一条件仅research。",
+      "acceptance_tests": [
+        "未来追加不改旧信号；禁随机打散时间训练；分割边界不泄漏重叠持有期；所有参数试验计入登记。"
+      ],
+      "parameters": [
+        "research_horizons"
+      ],
+      "dependencies": [
+        "Q33"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q35",
+      "name": "复盘、证据图与Skill输出",
+      "terms": [
+        "复盘"
+      ],
+      "source": [
+        "A15",
+        "B11",
+        "B19"
+      ],
+      "handbook_pages": [
+        27,
+        30,
+        50
+      ],
+      "kind": "工程接口",
+      "status": "待实现",
+      "definition": "分析/扫描/持仓复核/复盘四种入口共享规则引擎。输出数据时间与质量、market、symbol、timeframe、rule_version、parameter_hash、data_hash、state、supporting_evidence、contradicting_evidence、missing_evidence、invalidation、empirical_status。图表直接由计算用同一OHLCV绘制，标pivot_time与known_at、冻结边界、信号bar、确认bar。每条图注引用rule_id及source_ref。模型只能解释已返回字段，不能自创图上点位或概率。",
+      "timing": "每次运行生成不可覆盖的run_id；同一快照重跑必须同结果。配置更新生成新版本；发布历史与后续复盘分开。",
+      "invalidation": "字段缺失或计算错误时输出相应状态及可恢复原因；无信号是有效结果。SKILL.md作为短入口，公式/参数在引用资料，计算在脚本；本阶段不安装正式skill。",
+      "acceptance_tests": [
+        "文字与图上触发点一致；空结果可解释；未实证不得给胜率；任何历史改口可追溯。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q01",
+        "Q32",
+        "Q34"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false,
+      "user_correction": "BBI触线只增加支持证据；原TOUCH_CANDIDATE/CONFIRMED_CANDIDATE买入状态已废止，服从Q37 v0.4。"
+    },
+    {
+      "id": "Q36",
+      "name": "日线与完整周线BBI",
+      "terms": [
+        "BBI"
+      ],
+      "source": [
+        "USER_REQUIREMENT_2026_09_14"
+      ],
+      "handbook_pages": [],
+      "kind": "用户经验与工程约定",
+      "status": "待实现",
+      "definition": "BBI=(SMA(C,3)+SMA(C,6)+SMA(C,12)+SMA(C,24))/4；日收盘与完整周收盘分别计算，不跨segment、不缩短预热。显式记录参数、口径、完成时间、当前值及斜率。",
+      "timing": "仅使用available_at<=as_of的完成bar；暂估周内值单独显示且不参与确认。",
+      "invalidation": "不足24连续有效bar或口径混用时BBI为缺失。",
+      "acceptance_tests": [
+        "恒定序列BBI恒定；第23bar不可用，第24bar可用；周BBI不等于日BBI周采样；未来追加不改变过去结果。"
+      ],
+      "parameters": [
+        "bbi_windows"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q03",
+        "Q04",
+        "Q10"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q37",
+      "name": "上升背景中BBI触线仅作支持证据",
+      "terms": [
+        "BBI"
+      ],
+      "source": [
+        "USER_REQUIREMENT_2026_09_14",
+        "USER_CORRECTION_BBI_SUPPORT_ONLY"
+      ],
+      "handbook_pages": [],
+      "kind": "用户经验与工程约定",
+      "status": "本轮支持证据核心已实现；综合买入决策待实现",
+      "definition": "对应周期此前连续收盘严格高于各自同期BBI，日线研究门槛5根、周线3根；本根范围触及上一完成bar的BBI且收盘不低于该参考线，才生成SUPPORT_ONLY证据。只进入0.2ATR观察带不算实际触线。按日/周独立判断，周线UP不能替代日线连续历史。BBI不得单独生成买入、确认买入或具体概率，不设未经校准的数值权重，不逐日重复累计。其他模型、基本面与风险条件独立综合。",
+      "timing": "运行长度不含本根；只用完成可得bar；不跨缺口，等于/低于BBI中断连续运行；触线参考预先冻结。",
+      "invalidation": "上升背景不满足、实际未触线或触线后收盘跌破参考BBI则无此支持。基本面反证或其他模型反对仍可阻止买入。",
+      "acceptance_tests": [
+        "持续运行必须在触线之前建立；近线不等于触线；触线仅support，全部前提为真仍无BBI买入动作；日周独立；平线无背景；未来追加不改变历史。"
+      ],
+      "parameters": [
+        "bbi_prior_run_daily",
+        "bbi_prior_run_weekly"
+      ],
+      "dependencies": [
+        "Q03",
+        "Q09",
+        "Q11",
+        "Q36",
+        "Q38",
+        "Q40"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q38",
+      "name": "基本面前提与来源",
+      "terms": [],
+      "source": [
+        "USER_REQUIREMENT_2026_09_14"
+      ],
+      "handbook_pages": [],
+      "kind": "用户经验与工程约定",
+      "status": "待实现",
+      "definition": "fundamental_status=VERIFIED_SUPPORT/USER_ASSUMED/UNKNOWN/CONTRADICTED。记录具体论点、来源、信息可得日、复查点及失效事件。用户假设允许明确条件式分析；未知不冒充核验；反证阻断本策略合格候选。",
+      "timing": "只能使用as_of时已有证据；泛称基本面成立的股票不是对某只股票的确认。",
+      "invalidation": "论点失效或证据过期需要降级并具体说明，不凭价格上涨推断基本面。",
+      "acceptance_tests": [
+        "四种状态行为不同，用户假设不改写为verified；基本面反证时阻断候选。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q01"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "Q39",
+      "name": "分期限逐模型解释与冲突披露",
+      "terms": [],
+      "source": [
+        "USER_REQUIREMENT_2026_09_14"
+      ],
+      "handbook_pages": [],
+      "kind": "用户经验与工程约定",
+      "status": "待实现",
+      "definition": "每份报告声明短期和长期实际期限，分别评价当前状态及条件情景。对结构、BBI/均线、动量、量价、蜡烛线、图形家族检查适用性；实际适用模型逐一给数值、图上锚点、方向、理由、反证、确认、失效和验证状态。同期限模型冲突全部展开，不用MA/BBI/MACD重复投票。未经校准不报胜率。详见报告契约JSON。",
+      "timing": "统一证券、as_of、口径、bar周期和预测期限后才比较；不同期限可以同时偏多和偏空。",
+      "invalidation": "数据不足、模型不适用或尚未实现时明确列出，不能虚构预测。",
+      "acceptance_tests": [
+        "周偏多日偏空保留两者；同期限结构/动量分歧有双方证据；无适用图形不强行识别；未经校准无概率。"
+      ],
+      "parameters": [
+        "short_horizon_sessions",
+        "long_horizon_months"
+      ],
+      "dependencies": [
+        "Q09",
+        "Q10",
+        "Q32",
+        "Q36"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false,
+      "user_correction": "BBI触线只增加支持证据；原TOUCH_CANDIDATE/CONFIRMED_CANDIDATE买入状态已废止，服从Q37 v0.4。"
+    },
+    {
+      "id": "Q40",
+      "name": "BBI参考价格与信号执行时序",
+      "terms": [],
+      "source": [
+        "USER_REQUIREMENT_2026_09_14"
+      ],
+      "handbook_pages": [],
+      "kind": "用户经验与工程约定",
+      "status": "待实现",
+      "definition": "分别披露上一已完成bar静态BBI、当根完成后BBI和下一bar收盘相交代数情景值。静态BBI作为本根触线研究参考；观察带不算实际触线。Q37支持证据在本根完成后评估，不能转化为独立买入动作。下一情景值公式a=mean(1/n), b=mean(sum(last n-1 closes)/n), x=b/(1-a)，不是未来价格预测。日线OHLC不能证明盘中路径或实际成交。",
+      "timing": "仅用此前已知参考线判断本根触线，待本根完成后评估收盘失效；未来综合决策若产生交易动作，须另行处理可得时间、下一可成交时点及撮合，BBI模块本身不触发交易。",
+      "invalidation": "不能用本根完成后BBI回填盘前参考；公司行为、复权映射或盘中路径未知时不生成可执行报价。",
+      "acceptance_tests": [
+        "当前bar最终BBI不能回测此前盘中限价；周内暂估不回写历史完成周；代数情景非预测。"
+      ],
+      "parameters": [
+        "bbi_windows"
+      ],
+      "dependencies": [
+        "Q01",
+        "Q10",
+        "Q34",
+        "Q36"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false,
+      "user_correction": "BBI触线只增加支持证据；原TOUCH_CANDIDATE/CONFIRMED_CANDIDATE买入状态已废止，服从Q37 v0.4。"
+    },
+    {
+      "id": "Q41",
+      "name": "每轮理论标准图与标的实际图对照",
+      "terms": [],
+      "source": [
+        "USER_REQUIREMENT_2026_09_15"
+      ],
+      "handbook_pages": [],
+      "kind": "用户输出要求",
+      "status": "待实现",
+      "definition": "每轮具体标的买入/等待/不买/证据不足判断提供日线与完整周线背景图，并对决定结论和重要反证模型展示理论标准图、真实行情图和逐条件对照。BBI两周期分别对照；标明模型来源、数据日期、价格口径、匹配/不匹配/未确认条件、图上锚点与决策影响。图形相似不是盈利概率。",
+      "timing": "实际图仅绘制as_of可得数据；确认枢轴保留确认时点，未来假设与真实行情分离；每轮保存快照和图表版本。",
+      "invalidation": "缺少实际数据明确无法对照；禁止合成实际行情、强制视觉匹配、隐藏反证或未来信息。",
+      "acceptance_tests": [
+        "理论与实际图有来源和日期且数值与引擎一致；日/周BBI分别成对；触线未确认明确；不买入也有图证；相反模型均展示；未来数据不可见；缺数据不造图。"
+      ],
+      "parameters": [],
+      "dependencies": [
+        "Q01",
+        "Q10",
+        "Q35",
+        "Q36",
+        "Q37",
+        "Q39",
+        "Q40"
+      ],
+      "empirically_validated": false,
+      "live_enabled": false,
+      "user_correction": "BBI触线只增加支持证据；原TOUCH_CANDIDATE/CONFIRMED_CANDIDATE买入状态已废止，服从Q37 v0.4。"
+    }
+  ],
+  "source_coverage": [
+    {
+      "source_page": "A1",
+      "handbook_appendix_page": 58,
+      "topic": "HH与HL趋势图",
+      "rule_ids": "Q08 Q09",
+      "figure_ids": "G01",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A2",
+      "handbook_appendix_page": 59,
+      "topic": "上升下降序列与三级趋势",
+      "rule_ids": "Q08 Q09 Q10",
+      "figure_ids": "G02",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A3",
+      "handbook_appendix_page": 60,
+      "topic": "支撑阻力与上升楔形",
+      "rule_ids": "Q11 Q28",
+      "figure_ids": "G03",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A4",
+      "handbook_appendix_page": 61,
+      "topic": "角色互换、趋势线与下降楔形",
+      "rule_ids": "Q11 Q12 Q13 Q28",
+      "figure_ids": "G04",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A5",
+      "handbook_appendix_page": 62,
+      "topic": "趋势线矛盾表述、突破与四种价量",
+      "rule_ids": "Q07 Q12 Q13",
+      "figure_ids": "G05",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A6",
+      "handbook_appendix_page": 63,
+      "topic": "头肩顶两图、卖点1/2/3、量柱递减",
+      "rule_ids": "Q24 Q12 Q13 Q07",
+      "figure_ids": "G06 G07",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A7",
+      "handbook_appendix_page": 64,
+      "topic": "头肩底两图、买点1/2、量柱递增",
+      "rule_ids": "Q24 Q12 Q13 Q07",
+      "figure_ids": "G08 G09",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A8",
+      "handbook_appendix_page": 65,
+      "topic": "双顶底、颈线、等幅目标",
+      "rule_ids": "Q25 Q31",
+      "figure_ids": "G10 G11",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A9",
+      "handbook_appendix_page": 66,
+      "topic": "上涨/下跌20种外观及旗杆旗帜突破",
+      "rule_ids": "Q25 Q24 Q27 Q28 Q29",
+      "figure_ids": "G12 G13",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A10",
+      "handbook_appendix_page": 67,
+      "topic": "牛旗熊旗两幅",
+      "rule_ids": "Q27",
+      "figure_ids": "G14 G15",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A11",
+      "handbook_appendix_page": 68,
+      "topic": "三角旗a/b/c、MU无完整坐标案例",
+      "rule_ids": "Q27 Q26",
+      "figure_ids": "G16 G17",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A12",
+      "handbook_appendix_page": 69,
+      "topic": "矩形两幅、回靠与测量",
+      "rule_ids": "Q26 Q31",
+      "figure_ids": "G18",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "A13",
+      "handbook_appendix_page": 70,
+      "topic": "均线与震荡指标文字",
+      "rule_ids": "Q04 Q05 Q06",
+      "figure_ids": "",
+      "page_type": "文字页"
+    },
+    {
+      "source_page": "A14",
+      "handbook_appendix_page": 71,
+      "topic": "RSI MACD 多周期与表述限制",
+      "rule_ids": "Q05 Q06 Q10 Q30 Q34",
+      "figure_ids": "",
+      "page_type": "文字页"
+    },
+    {
+      "source_page": "A15",
+      "handbook_appendix_page": 72,
+      "topic": "全流程、趋势优先、确认",
+      "rule_ids": "Q09 Q13 Q32 Q35",
+      "figure_ids": "",
+      "page_type": "文字页"
+    },
+    {
+      "source_page": "B1",
+      "handbook_appendix_page": 73,
+      "topic": "16种型态与光头红K",
+      "rule_ids": "Q02 Q14 Q15 Q16",
+      "figure_ids": "G19 G20",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B2",
+      "handbook_appendix_page": 74,
+      "topic": "光脚、纺锤、配色差异与周期",
+      "rule_ids": "Q02 Q14 Q10",
+      "figure_ids": "G21 G22",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B3",
+      "handbook_appendix_page": 75,
+      "topic": "十字、反转后下跌/横盘续涨两图",
+      "rule_ids": "Q14 Q09",
+      "figure_ids": "G23 G24",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B4",
+      "handbook_appendix_page": 76,
+      "topic": "伞形、上吊及形态标准",
+      "rule_ids": "Q15 Q09",
+      "figure_ids": "G25",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B5",
+      "handbook_appendix_page": 77,
+      "topic": "第三项条件、趋势与确认差别、重复伞形",
+      "rule_ids": "Q15 Q13",
+      "figure_ids": "G26",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B6",
+      "handbook_appendix_page": 78,
+      "topic": "2月22/24锤子反例正例及失效",
+      "rule_ids": "Q15",
+      "figure_ids": "G27",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B7",
+      "handbook_appendix_page": 79,
+      "topic": "看涨看跌吞没图与条件",
+      "rule_ids": "Q17",
+      "figure_ids": "G28",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B8",
+      "handbook_appendix_page": 80,
+      "topic": "放大、成交量与两组极值支撑阻力",
+      "rule_ids": "Q17 Q07 Q11",
+      "figure_ids": "G29",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B9",
+      "handbook_appendix_page": 81,
+      "topic": "乌云、中点与长阳反证",
+      "rule_ids": "Q18 Q13",
+      "figure_ids": "G30",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B10",
+      "handbook_appendix_page": 82,
+      "topic": "刺透与待入切入插入对照",
+      "rule_ids": "Q18 Q19",
+      "figure_ids": "G31",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B11",
+      "handbook_appendix_page": 83,
+      "topic": "趋势位置确认及红底文字",
+      "rule_ids": "Q09 Q13 Q32",
+      "figure_ids": "",
+      "page_type": "文字页"
+    },
+    {
+      "source_page": "B12",
+      "handbook_appendix_page": 84,
+      "topic": "星线/十字星两图及雨滴",
+      "rule_ids": "Q20",
+      "figure_ids": "G32 G33",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B13",
+      "handbook_appendix_page": 85,
+      "topic": "启明星1/2/3及实体颜色",
+      "rule_ids": "Q20",
+      "figure_ids": "G34",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B14",
+      "handbook_appendix_page": 86,
+      "topic": "黄昏星、十字黄昏星",
+      "rule_ids": "Q20",
+      "figure_ids": "G35 G36",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B15",
+      "handbook_appendix_page": 87,
+      "topic": "十字启明星、弃婴顶部双跳空",
+      "rule_ids": "Q20 Q21",
+      "figure_ids": "G37 G38",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B16",
+      "handbook_appendix_page": 88,
+      "topic": "弃婴底部与流星",
+      "rule_ids": "Q21 Q16",
+      "figure_ids": "G39 G40",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B17",
+      "handbook_appendix_page": 89,
+      "topic": "倒锤子与前置下跌背景",
+      "rule_ids": "Q16",
+      "figure_ids": "G41",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B18",
+      "handbook_appendix_page": 90,
+      "topic": "孕线、十字孕线及颜色不限",
+      "rule_ids": "Q22",
+      "figure_ids": "G42 G43",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B19",
+      "handbook_appendix_page": 91,
+      "topic": "重复强调位置确认文字",
+      "rule_ids": "Q09 Q13 Q32",
+      "figure_ids": "",
+      "page_type": "文字页"
+    },
+    {
+      "source_page": "B20",
+      "handbook_appendix_page": 92,
+      "topic": "向上向下窗口、边界与收盘",
+      "rule_ids": "Q23",
+      "figure_ids": "G44 G45",
+      "page_type": "图表与文字"
+    },
+    {
+      "source_page": "B21",
+      "handbook_appendix_page": 93,
+      "topic": "五日均线算例、错误通式、MACD感想",
+      "rule_ids": "Q04 Q06 Q34",
+      "figure_ids": "G46",
+      "page_type": "图表与文字"
+    }
+  ],
+  "figure_coverage": [
+    {
+      "figure_id": "G01",
+      "source_page": "A1",
+      "title": "HH/HL蜡烛图",
+      "elements": "各高低点方框、上行中的回调、XS标识",
+      "rule_ids": "Q08 Q09"
+    },
+    {
+      "figure_id": "G02",
+      "source_page": "A2",
+      "title": "上升下降折线并列",
+      "elements": "HH/HL与LH/LL；图题Higher Highs Lower Lows歧义",
+      "rule_ids": "Q08 Q09"
+    },
+    {
+      "figure_id": "G03",
+      "source_page": "A3",
+      "title": "上升楔形",
+      "elements": "两条向上且收敛边界；未画突破",
+      "rule_ids": "Q28"
+    },
+    {
+      "figure_id": "G04",
+      "source_page": "A4",
+      "title": "下降楔形",
+      "elements": "两条向下且收敛边界；不能混作普通趋势线",
+      "rule_ids": "Q28 Q12"
+    },
+    {
+      "figure_id": "G05",
+      "source_page": "A5",
+      "title": "四种价量组合表",
+      "elements": "价格/成交量上升下降四组合；等值工程补充",
+      "rule_ids": "Q07"
+    },
+    {
+      "figure_id": "G06",
+      "source_page": "A6",
+      "title": "头肩顶上图",
+      "elements": "左右肩、头部、颈线、构成点、反抽箭头、递减量柱",
+      "rule_ids": "Q24 Q07 Q13"
+    },
+    {
+      "figure_id": "G07",
+      "source_page": "A6",
+      "title": "头肩顶下图",
+      "elements": "蓝趋势线、红颈线、卖出点1/2/3",
+      "rule_ids": "Q12 Q24 Q13"
+    },
+    {
+      "figure_id": "G08",
+      "source_page": "A7",
+      "title": "头肩底上图",
+      "elements": "左右肩、头部、颈线、突破箭头、递增量柱",
+      "rule_ids": "Q24 Q07 Q13"
+    },
+    {
+      "figure_id": "G09",
+      "source_page": "A7",
+      "title": "头肩底下图",
+      "elements": "蓝下降线、红颈线、买入点1/2、右肩事后成形",
+      "rule_ids": "Q12 Q24 Q13"
+    },
+    {
+      "figure_id": "G10",
+      "source_page": "A8",
+      "title": "双顶底上排",
+      "elements": "两顶/两底、中间反向拐点及颈线",
+      "rule_ids": "Q25"
+    },
+    {
+      "figure_id": "G11",
+      "source_page": "A8",
+      "title": "双顶底下排",
+      "elements": "买卖讯号、等幅弧线、停利价位",
+      "rule_ids": "Q25 Q31 Q33"
+    },
+    {
+      "figure_id": "G12",
+      "source_page": "A9",
+      "title": "两栏20种型态",
+      "elements": "W/M、三重、头肩、圆弧、喇叭、旗形、斜楔三角形、菱形、楔形、持续三角形；上涨/下跌各10",
+      "rule_ids": "Q24 Q25 Q27 Q28 Q29"
+    },
+    {
+      "figure_id": "G13",
+      "source_page": "A9",
+      "title": "旗形标注图",
+      "elements": "旗杆、旗帜、突破点及预期箭头",
+      "rule_ids": "Q27 Q13"
+    },
+    {
+      "figure_id": "G14",
+      "source_page": "A10",
+      "title": "上升旗形",
+      "elements": "快速上涨旗杆、略向下/平行整理、预期延伸",
+      "rule_ids": "Q27"
+    },
+    {
+      "figure_id": "G15",
+      "source_page": "A10",
+      "title": "下降旗形",
+      "elements": "快速下跌旗杆、略向上/平行整理、预期延伸",
+      "rule_ids": "Q27"
+    },
+    {
+      "figure_id": "G16",
+      "source_page": "A11",
+      "title": "三角旗左右图",
+      "elements": "上涨/下跌a旗杆、b收敛、c延伸；无等幅数值",
+      "rule_ids": "Q27"
+    },
+    {
+      "figure_id": "G17",
+      "source_page": "A11",
+      "title": "MU蜡烛案例",
+      "elements": "缺完整日期价格轴，无画出三角旗边界，不复原收益",
+      "rule_ids": "Q27 Q34"
+    },
+    {
+      "figure_id": "G18",
+      "source_page": "A12",
+      "title": "矩形左右图",
+      "elements": "看涨/看跌区间、突破、回靠、测量箭头",
+      "rule_ids": "Q26 Q31 Q13"
+    },
+    {
+      "figure_id": "G19",
+      "source_page": "B1",
+      "title": "K线16种型态表",
+      "elements": "红阳绿阴六种各一组；十字/T/倒T/一字四类",
+      "rule_ids": "Q02 Q14 Q15 Q16"
+    },
+    {
+      "figure_id": "G20",
+      "source_page": "B1",
+      "title": "光头红K线",
+      "elements": "无上影有下影；原图旁解释",
+      "rule_ids": "Q02"
+    },
+    {
+      "figure_id": "G21",
+      "source_page": "B2",
+      "title": "光脚红K线",
+      "elements": "有上影无下影；原图旁解释",
+      "rule_ids": "Q02"
+    },
+    {
+      "figure_id": "G22",
+      "source_page": "B2",
+      "title": "纺锤两色图",
+      "elements": "开收高低、小实体、上下影；绿阳红阴与B1不同",
+      "rule_ids": "Q02 Q14"
+    },
+    {
+      "figure_id": "G23",
+      "source_page": "B3",
+      "title": "十字线",
+      "elements": "开收相等或接近；结合趋势",
+      "rule_ids": "Q14"
+    },
+    {
+      "figure_id": "G24",
+      "source_page": "B3",
+      "title": "反转两情景图",
+      "elements": "信号后直接下行；先横盘再续涨",
+      "rule_ids": "Q09 Q13"
+    },
+    {
+      "figure_id": "G25",
+      "source_page": "B4",
+      "title": "伞形线与上吊情景",
+      "elements": "黑白都可；下影与实体比例；前置趋势",
+      "rule_ids": "Q15 Q09"
+    },
+    {
+      "figure_id": "G26",
+      "source_page": "B5",
+      "title": "重复伞形线",
+      "elements": "保留重复出现；结合第三条件及确认文字",
+      "rule_ids": "Q15 Q13"
+    },
+    {
+      "figure_id": "G27",
+      "source_page": "B6",
+      "title": "2月22/24历史片段",
+      "elements": "非锤子与典型锤子箭头；缺完整标的年份",
+      "rule_ids": "Q15 Q34"
+    },
+    {
+      "figure_id": "G28",
+      "source_page": "B7",
+      "title": "两种吞没图",
+      "elements": "看涨/看跌、实体覆盖、影线不强制覆盖",
+      "rule_ids": "Q17"
+    },
+    {
+      "figure_id": "G29",
+      "source_page": "B8",
+      "title": "吞没极值四例",
+      "elements": "两组阻力与两组支撑；组合最高/最低",
+      "rule_ids": "Q17 Q11"
+    },
+    {
+      "figure_id": "G30",
+      "source_page": "B9",
+      "title": "乌云盖顶图",
+      "elements": "高开、黑实体进入白实体、最高处虚线",
+      "rule_ids": "Q18 Q13"
+    },
+    {
+      "figure_id": "G31",
+      "source_page": "B10",
+      "title": "待入切入插入三图",
+      "elements": "近前低、近前收、进入未越中点；精确子型待核",
+      "rule_ids": "Q18 Q19"
+    },
+    {
+      "figure_id": "G32",
+      "source_page": "B12",
+      "title": "图5.1星线",
+      "elements": "上涨下跌两侧、黑白不限、实体互不接触",
+      "rule_ids": "Q20"
+    },
+    {
+      "figure_id": "G33",
+      "source_page": "B12",
+      "title": "图5.2十字星线",
+      "elements": "两侧背景、十字实体、雨滴别称",
+      "rule_ids": "Q20"
+    },
+    {
+      "figure_id": "G34",
+      "source_page": "B13",
+      "title": "图5.3启明星",
+      "elements": "第1/2/3根、第二实体颜色不限、低位虚线",
+      "rule_ids": "Q20"
+    },
+    {
+      "figure_id": "G35",
+      "source_page": "B14",
+      "title": "图5.7黄昏星",
+      "elements": "第1/2/3根、颜色不限、高位虚线",
+      "rule_ids": "Q20"
+    },
+    {
+      "figure_id": "G36",
+      "source_page": "B14",
+      "title": "图5.11十字黄昏星",
+      "elements": "上涨背景、中间十字、第三阴线",
+      "rule_ids": "Q20"
+    },
+    {
+      "figure_id": "G37",
+      "source_page": "B15",
+      "title": "图5.12十字启明星",
+      "elements": "下跌背景、中间十字、第三阳线",
+      "rule_ids": "Q20"
+    },
+    {
+      "figure_id": "G38",
+      "source_page": "B15",
+      "title": "图5.13弃婴顶部",
+      "elements": "十字两侧完整区间跳空",
+      "rule_ids": "Q21"
+    },
+    {
+      "figure_id": "G39",
+      "source_page": "B16",
+      "title": "图5.14弃婴底部",
+      "elements": "底部十字两侧完整区间跳空",
+      "rule_ids": "Q21"
+    },
+    {
+      "figure_id": "G40",
+      "source_page": "B16",
+      "title": "图5.19流星",
+      "elements": "上涨背景、长上影、黑白不限",
+      "rule_ids": "Q16"
+    },
+    {
+      "figure_id": "G41",
+      "source_page": "B17",
+      "title": "图5.23倒锤子线",
+      "elements": "下跌背景、长上影、黑白不限",
+      "rule_ids": "Q16"
+    },
+    {
+      "figure_id": "G42",
+      "source_page": "B18",
+      "title": "图6.1孕线",
+      "elements": "两侧趋势、小实体包含、颜色不限",
+      "rule_ids": "Q22"
+    },
+    {
+      "figure_id": "G43",
+      "source_page": "B18",
+      "title": "图6.3十字孕线",
+      "elements": "包含的是实体，不强制包含影线",
+      "rule_ids": "Q22"
+    },
+    {
+      "figure_id": "G44",
+      "source_page": "B20",
+      "title": "图7.1向上窗口",
+      "elements": "两端边界、回落、没有收市于窗口之下",
+      "rule_ids": "Q23"
+    },
+    {
+      "figure_id": "G45",
+      "source_page": "B20",
+      "title": "图7.2向下窗口",
+      "elements": "两端边界、反弹、没有收市于窗口之上",
+      "rule_ids": "Q23"
+    },
+    {
+      "figure_id": "G46",
+      "source_page": "B21",
+      "title": "五日SMA算例与通式",
+      "elements": "38.80算例；通式分子五项/分母n错误",
+      "rule_ids": "Q04"
+    }
+  ],
+  "term_coverage": [
+    {
+      "term": "趋势",
+      "english": "Trend",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "4",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "一段时间内高点与低点持续推进的方向。先注明周期。"
+    },
+    {
+      "term": "市场结构",
+      "english": "Market Structure",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "4,27",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "多个高低点、区间与关键边界之间的关系，是判断背景的基础。"
+    },
+    {
+      "term": "上升趋势",
+      "english": "Uptrend",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "高点与低点同步抬高的结构；仍可包含回调。"
+    },
+    {
+      "term": "下降趋势",
+      "english": "Downtrend",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "反弹高点与随后低点持续降低的结构。"
+    },
+    {
+      "term": "横盘",
+      "english": "Sideways / Range",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5,8,11",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "价格缺少持续的同向推进，反复围绕区间波动。"
+    },
+    {
+      "term": "HH",
+      "english": "Higher High",
+      "aliases": "更高的高点",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "比上一个可比高点更高的高点。"
+    },
+    {
+      "term": "HL",
+      "english": "Higher Low",
+      "aliases": "更高的低点",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "比上一个可比低点更高的低点。"
+    },
+    {
+      "term": "LH",
+      "english": "Lower High",
+      "aliases": "更低的高点",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "比上一个可比高点更低的高点。"
+    },
+    {
+      "term": "LL",
+      "english": "Lower Low",
+      "aliases": "更低的低点",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "比上一个可比低点更低的低点。"
+    },
+    {
+      "term": "主要趋势",
+      "english": "Primary Trend",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "6",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "原笔记指持续数月到数年的主要方向。"
+    },
+    {
+      "term": "次级趋势",
+      "english": "Secondary Trend",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "6",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "主要趋势内部的中期调整，不自动意味着主要趋势结束。"
+    },
+    {
+      "term": "短期趋势",
+      "english": "Minor Trend",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "6",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "原笔记指持续数天到数周的小级别波动。"
+    },
+    {
+      "term": "多周期",
+      "english": "Multiple Time Frames",
+      "aliases": "周期",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q10",
+      "status": "待实现",
+      "handbook_pages": "6,24,27,28,30",
+      "source_pages": "A2 A14 A15 B2 B11 B19",
+      "definition": "从较大周期看背景，再用较小周期细化观察；不同周期不可混同。"
+    },
+    {
+      "term": "回调",
+      "english": "Pullback",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5,6,28",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "既有方向中的逆向调整，尚不必然破坏更大趋势。"
+    },
+    {
+      "term": "反转",
+      "english": "Reversal",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q09",
+      "status": "待实现",
+      "handbook_pages": "5,8,11,29",
+      "source_pages": "A1 A2 B3 B4 B5",
+      "definition": "原趋势的运行状态发生改变；警告出现时，新反向趋势未必已建立。"
+    },
+    {
+      "term": "位置",
+      "english": "Location",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q11",
+      "status": "待实现",
+      "handbook_pages": "4,7,27",
+      "source_pages": "A3 A4 B8 B9 B20",
+      "definition": "形态相对于前高、前低、支撑阻力、均线等边界的所在之处。"
+    },
+    {
+      "term": "支撑",
+      "english": "Support",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q11",
+      "status": "待实现",
+      "handbook_pages": "7,14,19",
+      "source_pages": "A3 A4 B8 B9 B20",
+      "definition": "价格此前出现止跌反应的候选区域，其当前作用仍需验证。"
+    },
+    {
+      "term": "阻力",
+      "english": "Resistance",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q11",
+      "status": "待实现",
+      "handbook_pages": "7,14,19",
+      "source_pages": "A3 A4 B8 B9 B20",
+      "definition": "价格此前出现上行受阻反应的候选区域，其当前作用仍需验证。"
+    },
+    {
+      "term": "角色互换",
+      "english": "Role Reversal",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q11",
+      "status": "待实现",
+      "handbook_pages": "7,20,28",
+      "source_pages": "A3 A4 B8 B9 B20",
+      "definition": "原阻力被突破后可能转为支撑，原支撑失守后可能转为阻力。"
+    },
+    {
+      "term": "趋势线",
+      "english": "Trend Line",
+      "aliases": "上升趋势线；下降趋势线",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q12",
+      "status": "待实现",
+      "handbook_pages": "8,31",
+      "source_pages": "A4 A5",
+      "definition": "连接重要拐点以描述运行方式；上升线连重要HL，下降线连重要LH。"
+    },
+    {
+      "term": "突破",
+      "english": "Breakout",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q13",
+      "status": "待实现",
+      "handbook_pages": "7,9,22",
+      "source_pages": "A4 A5 A6 A7 A15 B11 B19",
+      "definition": "价格穿越已识别边界的事件；需要和能否持续保持分开评价。"
+    },
+    {
+      "term": "回测",
+      "english": "Retest",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q11",
+      "status": "待实现",
+      "handbook_pages": "7,9",
+      "source_pages": "A3 A4 B8 B9 B20",
+      "definition": "穿越边界后再次返回附近，检验边界是否具有新的作用。"
+    },
+    {
+      "term": "假突破",
+      "english": "False Breakout",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q13",
+      "status": "待实现",
+      "handbook_pages": "9,29",
+      "source_pages": "A4 A5 A6 A7 A15 B11 B19",
+      "definition": "越界后未能维持并返回原范围的情形；需要说明判定周期与口径。"
+    },
+    {
+      "term": "确认",
+      "english": "Confirmation",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q13",
+      "status": "待实现",
+      "handbook_pages": "4,6,9,12,13,18,20,27,29,30,31",
+      "source_pages": "A4 A5 A6 A7 A15 B11 B19",
+      "definition": "后续可观察的证据继续支持候选解释，不能事先假定它必然出现。"
+    },
+    {
+      "term": "失效条件",
+      "english": "Invalidation",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q13",
+      "status": "待实现",
+      "handbook_pages": "4,9,12,27",
+      "source_pages": "A4 A5 A6 A7 A15 B11 B19",
+      "definition": "若出现便应撤销或重估当前解释的可观察变化；为本书整理补充。"
+    },
+    {
+      "term": "成交量",
+      "english": "Volume",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q07",
+      "status": "待实现",
+      "handbook_pages": "9,14,20",
+      "source_pages": "A5 B8",
+      "definition": "指定时段的成交数量；用来观察参与程度，不能直接证明资金身份。"
+    },
+    {
+      "term": "量价关系",
+      "english": "Price–Volume Relationship",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q07",
+      "status": "待实现",
+      "handbook_pages": "9",
+      "source_pages": "A5 B8",
+      "definition": "把价格方向与成交量变化结合起来阅读，仍需结构与位置作为背景。"
+    },
+    {
+      "term": "复盘",
+      "english": "Review",
+      "aliases": "",
+      "group": "趋势、位置与验证",
+      "rule_id": "Q35",
+      "status": "待实现",
+      "handbook_pages": "27,28,30",
+      "source_pages": "A15 B11 B19",
+      "definition": "按当时可见的信息核对判断过程，避免事后把未知结果写成已有依据。"
+    },
+    {
+      "term": "蜡烛线",
+      "english": "Candlestick",
+      "aliases": "K线",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "用开、高、低、收表示一个交易时段的价格变化。"
+    },
+    {
+      "term": "开盘价",
+      "english": "Open",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "选定时段的起始交易价格。"
+    },
+    {
+      "term": "收盘价",
+      "english": "Close",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "选定时段结束时的交易价格；未结束的蜡烛收盘值仍会变化。"
+    },
+    {
+      "term": "最高价",
+      "english": "High",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "选定时段内出现的最高交易价格。"
+    },
+    {
+      "term": "最低价",
+      "english": "Low",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "选定时段内出现的最低交易价格。"
+    },
+    {
+      "term": "实体",
+      "english": "Real Body",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10,14,18",
+      "source_pages": "B1 B2 B3",
+      "definition": "开盘与收盘之间的价格范围，不包括上下影线。"
+    },
+    {
+      "term": "上影线",
+      "english": "Upper Shadow",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10,13",
+      "source_pages": "B1 B2 B3",
+      "definition": "实体上端到最高价的区间。"
+    },
+    {
+      "term": "下影线",
+      "english": "Lower Shadow",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10,12",
+      "source_pages": "B1 B2 B3",
+      "definition": "最低价到实体下端的区间。"
+    },
+    {
+      "term": "阳线",
+      "english": "Bullish Candle",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "收盘高于开盘；不等于收盘一定高于上一时段。"
+    },
+    {
+      "term": "阴线",
+      "english": "Bearish Candle",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "收盘低于开盘；不等于收盘一定低于上一时段。"
+    },
+    {
+      "term": "光头线",
+      "english": "No Upper Shadow",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "按几何约定，没有上影线的蜡烛。"
+    },
+    {
+      "term": "光脚线",
+      "english": "No Lower Shadow",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "10",
+      "source_pages": "B1 B2 B3",
+      "definition": "按几何约定，没有下影线的蜡烛。"
+    },
+    {
+      "term": "纺锤线",
+      "english": "Spinning Top",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q14",
+      "status": "待实现",
+      "handbook_pages": "11",
+      "source_pages": "B1 B2 B3",
+      "definition": "实体较小、可带上下影线；常用来描述犹豫或力量暂时平衡。"
+    },
+    {
+      "term": "十字线",
+      "english": "Doji",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q14",
+      "status": "待实现",
+      "handbook_pages": "11",
+      "source_pages": "B1 B2 B3",
+      "definition": "开盘与收盘相同或非常接近的小实体蜡烛。"
+    },
+    {
+      "term": "T字线",
+      "english": "Dragonfly Doji",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q14",
+      "status": "待实现",
+      "handbook_pages": "11",
+      "source_pages": "B1 B2 B3",
+      "definition": "十字实体在价格区间上端、下影较明显的外观。"
+    },
+    {
+      "term": "倒T字线",
+      "english": "Gravestone Doji",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q14",
+      "status": "待实现",
+      "handbook_pages": "11",
+      "source_pages": "B1 B2 B3",
+      "definition": "十字实体在价格区间下端、上影较明显的外观。"
+    },
+    {
+      "term": "一字线",
+      "english": "Four-price Doji",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q14",
+      "status": "待实现",
+      "handbook_pages": "11",
+      "source_pages": "B1 B2 B3",
+      "definition": "开、高、低、收几乎重合的特殊外观。"
+    },
+    {
+      "term": "锤子线",
+      "english": "Hammer",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q15",
+      "status": "待实现",
+      "handbook_pages": "12,28,31",
+      "source_pages": "B4 B5 B6",
+      "definition": "下跌后出现的小实体长下影形态；原笔记下影约至少实体两倍。"
+    },
+    {
+      "term": "上吊线",
+      "english": "Hanging Man",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q15",
+      "status": "待实现",
+      "handbook_pages": "12,29,31",
+      "source_pages": "B4 B5 B6",
+      "definition": "上涨后出现、外形与锤子线相似的警告形态，尤需后续验证。"
+    },
+    {
+      "term": "流星",
+      "english": "Shooting Star",
+      "aliases": "射击之星",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q16",
+      "status": "待实现",
+      "handbook_pages": "13",
+      "source_pages": "B16 B17",
+      "definition": "上涨后出现的小实体长上影形态；上攻曾发生，但高价未保持。"
+    },
+    {
+      "term": "倒锤子线",
+      "english": "Inverted Hammer",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q16",
+      "status": "待实现",
+      "handbook_pages": "13",
+      "source_pages": "B16 B17",
+      "definition": "下跌后出现的小实体长上影形态；后续买盘能否接力是关键。"
+    },
+    {
+      "term": "吞没形态",
+      "english": "Engulfing Pattern",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q17",
+      "status": "待实现",
+      "handbook_pages": "14,15,18,30",
+      "source_pages": "B7 B8",
+      "definition": "第二根反色实体覆盖第一根实体；不要求完全覆盖影线。"
+    },
+    {
+      "term": "看涨吞没",
+      "english": "Bullish Engulfing",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q17",
+      "status": "待实现",
+      "handbook_pages": "14,28",
+      "source_pages": "B7 B8",
+      "definition": "下跌后，较大阳线实体覆盖前一阴线实体。"
+    },
+    {
+      "term": "看跌吞没",
+      "english": "Bearish Engulfing",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q17",
+      "status": "待实现",
+      "handbook_pages": "14",
+      "source_pages": "B7 B8",
+      "definition": "上涨后，较大阴线实体覆盖前一阳线实体。"
+    },
+    {
+      "term": "实体中点",
+      "english": "Body Midpoint",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q02",
+      "status": "待实现",
+      "handbook_pages": "15",
+      "source_pages": "B1 B2 B3",
+      "definition": "实体上下端价格的平均值，是乌云盖顶与刺透的深度参照。"
+    },
+    {
+      "term": "乌云盖顶",
+      "english": "Dark Cloud Cover",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q18",
+      "status": "待实现",
+      "handbook_pages": "15",
+      "source_pages": "B9 B10",
+      "definition": "上涨后的阳阴组合，次日高开走弱，收盘深入前一阳线实体。"
+    },
+    {
+      "term": "刺透形态",
+      "english": "Piercing Pattern",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q18",
+      "status": "待实现",
+      "handbook_pages": "15",
+      "source_pages": "B9 B10",
+      "definition": "下跌后的阴阳组合，后一阳线深入前一阴线实体，理想状态越过中点。"
+    },
+    {
+      "term": "待入／切入／插入线",
+      "english": "Incomplete Recovery Patterns",
+      "aliases": "待入线；切入线；插入线",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q19",
+      "status": "部分可计算；子型人工复核",
+      "handbook_pages": "15",
+      "source_pages": "B10",
+      "definition": "原图用于区分收复不足的近似组合；这里合并解释，英文为描述性译法。"
+    },
+    {
+      "term": "星线",
+      "english": "Star",
+      "aliases": "雨滴",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "16",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "小实体与此前较大实体不重叠；影线可以接触或重叠。"
+    },
+    {
+      "term": "实体跳空",
+      "english": "Body Gap",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "16,17",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "相邻实体区间彼此分离，条件弱于整个高低区间分离。"
+    },
+    {
+      "term": "十字星线",
+      "english": "Doji Star",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "16",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "星线的中间实体缩小为十字；本身不等于完整反转组合。"
+    },
+    {
+      "term": "启明星",
+      "english": "Morning Star",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "16",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "下跌背景中的长阴、小星线、反向阳线三根组合。"
+    },
+    {
+      "term": "黄昏星",
+      "english": "Evening Star",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "16",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "上涨背景中的长阳、小星线、反向阴线三根组合。"
+    },
+    {
+      "term": "十字启明星",
+      "english": "Morning Doji Star",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "17",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "启明星中间的小实体变为十字线。"
+    },
+    {
+      "term": "十字黄昏星",
+      "english": "Evening Doji Star",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q20",
+      "status": "待实现",
+      "handbook_pages": "17",
+      "source_pages": "B12 B13 B14 B15",
+      "definition": "黄昏星中间的小实体变为十字线。"
+    },
+    {
+      "term": "弃婴顶部",
+      "english": "Bearish Abandoned Baby",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q21",
+      "status": "待实现",
+      "handbook_pages": "17",
+      "source_pages": "B15 B16",
+      "definition": "顶部三根组合中，十字线连同影线被两侧价格区间隔开。"
+    },
+    {
+      "term": "弃婴底部",
+      "english": "Bullish Abandoned Baby",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q21",
+      "status": "待实现",
+      "handbook_pages": "17",
+      "source_pages": "B15 B16",
+      "definition": "底部三根组合中，十字线连同影线被两侧价格区间隔开。"
+    },
+    {
+      "term": "孕线",
+      "english": "Harami",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q22",
+      "status": "待实现",
+      "handbook_pages": "18",
+      "source_pages": "B18",
+      "definition": "第二根较小实体位于第一根较大实体内部，代表实体范围收缩。"
+    },
+    {
+      "term": "十字孕线",
+      "english": "Harami Cross",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q22",
+      "status": "待实现",
+      "handbook_pages": "18",
+      "source_pages": "B18",
+      "definition": "孕线的第二根为十字，体现更明显的停顿特征。"
+    },
+    {
+      "term": "窗口",
+      "english": "Window / Gap",
+      "aliases": "缺口；跳空",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q23",
+      "status": "待实现",
+      "handbook_pages": "7,17,19",
+      "source_pages": "B20",
+      "definition": "相邻时段完整高低区间之间的空白价格区域；需区别于仅实体跳空。"
+    },
+    {
+      "term": "向上窗口",
+      "english": "Rising Window",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q23",
+      "status": "待实现",
+      "handbook_pages": "19",
+      "source_pages": "B20",
+      "definition": "后一时段最低价高于前一时段最高价，窗口可作为支撑候选区域。"
+    },
+    {
+      "term": "向下窗口",
+      "english": "Falling Window",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q23",
+      "status": "待实现",
+      "handbook_pages": "19",
+      "source_pages": "B20",
+      "definition": "后一时段最高价低于前一时段最低价，窗口可作为阻力候选区域。"
+    },
+    {
+      "term": "回补",
+      "english": "Gap Fill",
+      "aliases": "",
+      "group": "单根蜡烛与组合",
+      "rule_id": "Q23",
+      "status": "待实现",
+      "handbook_pages": "19",
+      "source_pages": "B20",
+      "definition": "价格重新进入或穿过窗口区域；应说明是部分进入还是完整回补。"
+    },
+    {
+      "term": "头肩顶",
+      "english": "Head and Shoulders Top",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q24",
+      "status": "待实现",
+      "handbook_pages": "20",
+      "source_pages": "A6 A7",
+      "definition": "中间头部较高、两侧肩部较低的顶部候选结构，关注下破颈线。"
+    },
+    {
+      "term": "头肩底",
+      "english": "Inverse Head and Shoulders",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q24",
+      "status": "待实现",
+      "handbook_pages": "20",
+      "source_pages": "A6 A7",
+      "definition": "中间头部较低、两侧肩部较高的底部候选结构，关注上破颈线。"
+    },
+    {
+      "term": "右肩",
+      "english": "Right Shoulder",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q24",
+      "status": "待实现",
+      "handbook_pages": "20",
+      "source_pages": "A6 A7",
+      "definition": "头部之后形成的次级峰或谷；出现右肩不等于颈线已经突破。"
+    },
+    {
+      "term": "颈线",
+      "english": "Neckline",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q24",
+      "status": "待实现",
+      "handbook_pages": "20,21,31",
+      "source_pages": "A6 A7",
+      "definition": "连接头肩或多重顶底中关键反向拐点的边界；角色须分突破前后。"
+    },
+    {
+      "term": "双顶",
+      "english": "Double Top",
+      "aliases": "M形顶",
+      "group": "结构形态与指标",
+      "rule_id": "Q25",
+      "status": "待实现",
+      "handbook_pages": "21",
+      "source_pages": "A8",
+      "definition": "两个相近高点与中间低点形成的顶部候选结构。"
+    },
+    {
+      "term": "双底",
+      "english": "Double Bottom",
+      "aliases": "W形底",
+      "group": "结构形态与指标",
+      "rule_id": "Q25",
+      "status": "待实现",
+      "handbook_pages": "21,30",
+      "source_pages": "A8",
+      "definition": "两个相近低点与中间高点形成的底部候选结构。"
+    },
+    {
+      "term": "三重顶／底",
+      "english": "Triple Top / Bottom",
+      "aliases": "三重顶；三重底",
+      "group": "结构形态与指标",
+      "rule_id": "Q29",
+      "status": "人工复核；不自动识别",
+      "handbook_pages": "21",
+      "source_pages": "A9",
+      "definition": "反复三次测试相近高／低位的外观；原笔记主要在总览图列名。"
+    },
+    {
+      "term": "圆弧顶／底",
+      "english": "Rounding Top / Bottom",
+      "aliases": "圆弧顶；圆弧底",
+      "group": "结构形态与指标",
+      "rule_id": "Q29",
+      "status": "人工复核；不自动识别",
+      "handbook_pages": "23",
+      "source_pages": "A9",
+      "definition": "价格逐步转弯形成圆弧的外观；原笔记未展开参数与规则。"
+    },
+    {
+      "term": "喇叭形",
+      "english": "Broadening Formation",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q29",
+      "status": "人工复核；不自动识别",
+      "handbook_pages": "23",
+      "source_pages": "A9",
+      "definition": "边界逐渐扩张的结构外观，原总览图列喇叭顶与底。"
+    },
+    {
+      "term": "菱形",
+      "english": "Diamond Formation",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q29",
+      "status": "人工复核；不自动识别",
+      "handbook_pages": "23",
+      "source_pages": "A9",
+      "definition": "常呈先扩张再收缩的菱形轮廓；原文仅列名与图示。"
+    },
+    {
+      "term": "楔形",
+      "english": "Wedge",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q28",
+      "status": "人工边界；自动识别待研究",
+      "handbook_pages": "8,23",
+      "source_pages": "A3 A4 A9",
+      "definition": "上下边界同向倾斜并逐渐收敛的结构。"
+    },
+    {
+      "term": "对称三角形",
+      "english": "Symmetrical Triangle",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q29",
+      "status": "人工复核；不自动识别",
+      "handbook_pages": "23",
+      "source_pages": "A9",
+      "definition": "高点下降、低点上升，两条边界向中间收敛。"
+    },
+    {
+      "term": "上升／下降三角形",
+      "english": "Ascending / Descending Triangle",
+      "aliases": "上升三角形；下降三角形",
+      "group": "结构形态与指标",
+      "rule_id": "Q29",
+      "status": "人工复核；不自动识别",
+      "handbook_pages": "23",
+      "source_pages": "A9",
+      "definition": "一侧近水平、另一侧向其靠拢的三角形；对应原图“斜横三角形”外观。"
+    },
+    {
+      "term": "持续形态",
+      "english": "Continuation Pattern",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q27",
+      "status": "人工标注；自动识别待研究",
+      "handbook_pages": "22,23",
+      "source_pages": "A9 A10 A11",
+      "definition": "既有走势整理后可能继续的结构家族，仍需实际突破来确认。"
+    },
+    {
+      "term": "旗形",
+      "english": "Flag",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q27",
+      "status": "人工标注；自动识别待研究",
+      "handbook_pages": "22",
+      "source_pages": "A9 A10 A11",
+      "definition": "快速推进之后形成的较小平行或倾斜整理区。"
+    },
+    {
+      "term": "旗杆",
+      "english": "Flagpole",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q27",
+      "status": "人工标注；自动识别待研究",
+      "handbook_pages": "22",
+      "source_pages": "A9 A10 A11",
+      "definition": "旗形或三角旗之前的快速单向推进部分。"
+    },
+    {
+      "term": "牛旗",
+      "english": "Bull Flag",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q27",
+      "status": "人工标注；自动识别待研究",
+      "handbook_pages": "22",
+      "source_pages": "A9 A10 A11",
+      "definition": "上涨旗杆后的整理形态，观察是否恢复向上推进。"
+    },
+    {
+      "term": "熊旗",
+      "english": "Bear Flag",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q27",
+      "status": "人工标注；自动识别待研究",
+      "handbook_pages": "22",
+      "source_pages": "A9 A10 A11",
+      "definition": "下跌旗杆后的整理形态，观察是否恢复向下推进。"
+    },
+    {
+      "term": "三角旗",
+      "english": "Pennant",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q27",
+      "status": "人工标注；自动识别待研究",
+      "handbook_pages": "22",
+      "source_pages": "A9 A10 A11",
+      "definition": "快速旗杆之后形成的短小收敛整理，区别于没有旗杆背景的一般三角形。"
+    },
+    {
+      "term": "矩形",
+      "english": "Rectangle",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q26",
+      "status": "待实现",
+      "handbook_pages": "22,23,29",
+      "source_pages": "A11 A12",
+      "definition": "上下边界近似水平的反复整理区；不预先锁定突破方向。"
+    },
+    {
+      "term": "量度目标",
+      "english": "Measured-move Reference",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q31",
+      "status": "待实现",
+      "handbook_pages": "21",
+      "source_pages": "A8 A12",
+      "definition": "根据图形高度推算的价格参考，不是保证到达的结果。"
+    },
+    {
+      "term": "均线",
+      "english": "Moving Average",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q04",
+      "status": "待实现",
+      "handbook_pages": "24",
+      "source_pages": "A13 B21",
+      "definition": "对历史价格作平滑计算，辅助阅读趋势与候选支撑阻力。"
+    },
+    {
+      "term": "SMA",
+      "english": "Simple Moving Average",
+      "aliases": "简单移动平均线",
+      "group": "结构形态与指标",
+      "rule_id": "Q04",
+      "status": "待实现",
+      "handbook_pages": "24,31",
+      "source_pages": "A13 B21",
+      "definition": "简单移动平均线，最近 n 期价格等权平均。"
+    },
+    {
+      "term": "EMA",
+      "english": "Exponential Moving Average",
+      "aliases": "指数移动平均线",
+      "group": "结构形态与指标",
+      "rule_id": "Q04",
+      "status": "待实现",
+      "handbook_pages": "24,26",
+      "source_pages": "A13 B21",
+      "definition": "指数移动平均线，较近数据权重较高。"
+    },
+    {
+      "term": "动态支撑",
+      "english": "Dynamic Support",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q04",
+      "status": "待实现",
+      "handbook_pages": "24",
+      "source_pages": "A13 B21",
+      "definition": "随时间变化的均线等形成的潜在支撑，而非固定价位承诺。"
+    },
+    {
+      "term": "动量",
+      "english": "Momentum",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q05",
+      "status": "待实现",
+      "handbook_pages": "25",
+      "source_pages": "A13 A14",
+      "definition": "价格变化的速度或力度，需与价格所处水平和结构区分。"
+    },
+    {
+      "term": "震荡指标",
+      "english": "Oscillator",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q05",
+      "status": "待实现",
+      "handbook_pages": "25,26",
+      "source_pages": "A13 A14",
+      "definition": "围绕中线或在一定范围内波动的指标家族，不能一律套用相同阈值。"
+    },
+    {
+      "term": "RSI",
+      "english": "Relative Strength Index",
+      "aliases": "相对强弱指标",
+      "group": "结构形态与指标",
+      "rule_id": "Q05",
+      "status": "待实现",
+      "handbook_pages": "25,28,30",
+      "source_pages": "A13 A14",
+      "definition": "相对强弱指标，比较近期上涨与下跌变化，常以0到100表示。"
+    },
+    {
+      "term": "超买／超卖",
+      "english": "Overbought / Oversold",
+      "aliases": "超买；超卖",
+      "group": "结构形态与指标",
+      "rule_id": "Q05",
+      "status": "待实现",
+      "handbook_pages": "25",
+      "source_pages": "A13 A14",
+      "definition": "指标描述的相对强弱或极端状态，不是必然立即反向的结论。"
+    },
+    {
+      "term": "背离",
+      "english": "Divergence",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q30",
+      "status": "待实现",
+      "handbook_pages": "25,31",
+      "source_pages": "A14",
+      "definition": "价格新高／低与指标的对应高／低点未同步；首先是动量警告。"
+    },
+    {
+      "term": "顶部背离",
+      "english": "Bearish Divergence",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q30",
+      "status": "待实现",
+      "handbook_pages": "25,29",
+      "source_pages": "A14",
+      "definition": "价格创新高而指标对应高点未创新高。"
+    },
+    {
+      "term": "底部背离",
+      "english": "Bullish Divergence",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q30",
+      "status": "待实现",
+      "handbook_pages": "25",
+      "source_pages": "A14",
+      "definition": "价格创新低而指标对应低点未创新低。"
+    },
+    {
+      "term": "MACD",
+      "english": "Moving Average Convergence/Divergence",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q06",
+      "status": "待实现",
+      "handbook_pages": "26,28,31",
+      "source_pages": "A14 B21",
+      "definition": "以快慢EMA差值及其信号线观察动量与趋势的指标。"
+    },
+    {
+      "term": "DIF",
+      "english": "MACD Line",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q06",
+      "status": "待实现",
+      "handbook_pages": "26,30",
+      "source_pages": "A14 B21",
+      "definition": "常见为12期EMA减26期EMA；英文平台常称 MACD line。"
+    },
+    {
+      "term": "DEA",
+      "english": "Signal Line",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q06",
+      "status": "待实现",
+      "handbook_pages": "26",
+      "source_pages": "A14 B21",
+      "definition": "DIF 的平滑信号线，常见为9期EMA。"
+    },
+    {
+      "term": "柱状图",
+      "english": "MACD Histogram",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q06",
+      "status": "待实现",
+      "handbook_pages": "26,30",
+      "source_pages": "A14 B21",
+      "definition": "常以DIF与DEA差值显示；具体缩放与颜色应核对软件口径。"
+    },
+    {
+      "term": "零轴",
+      "english": "Zero Line",
+      "aliases": "",
+      "group": "结构形态与指标",
+      "rule_id": "Q06",
+      "status": "待实现",
+      "handbook_pages": "26",
+      "source_pages": "A14 B21",
+      "definition": "MACD 差值为零的位置，不能与DIF穿越DEA混为一谈。"
+    },
+    {
+      "term": "金叉／死叉",
+      "english": "Bullish / Bearish Crossover",
+      "aliases": "金叉；死叉",
+      "group": "结构形态与指标",
+      "rule_id": "Q06",
+      "status": "待实现",
+      "handbook_pages": "26,29,30",
+      "source_pages": "A14 B21",
+      "definition": "快线向上／下穿越慢线；必须说明是均线交叉还是MACD线交叉。"
+    }
+  ],
+  "external_references": [
+    [
+      "AKShare股票数据",
+      "接口名称、数据字段与限制；尚未实际调用验证",
+      "https://akshare.akfamily.xyz/data/stock/stock.html"
+    ],
+    [
+      "上交所交易规则",
+      "A股交易规则适配资料；执行时按生效日期与板块读取",
+      "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml"
+    ],
+    [
+      "港交所交易说明",
+      "即日交易、交收与券商安排的区别",
+      "https://www.hkex.com.hk/Global/Exchange/FAQ/Securities-Market/Trading?sc_lang=en"
+    ],
+    [
+      "港交所交易时段",
+      "全日、半日及收市竞价日历依据",
+      "https://www.hkex.com.hk/Services/Trading-hours-and-Severe-Weather-Arrangements/Trading-Hours/Securities-Market"
+    ],
+    [
+      "Fidelity RSI",
+      "指标定义与状态解释核对",
+      "https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/RSI"
+    ],
+    [
+      "Fidelity MACD",
+      "差值、信号线与震荡市场限制核对",
+      "https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/macd"
+    ]
+  ],
+  "base_spec_sha256": "ca731d3b08296a28d340e6eb6dca10da9fb01f26ce5dffdadd22a2379bd1491a",
+  "requirements_reference": "BBI与多模型解释要求.md",
+  "new_rule_origin": "USER_REQUIREMENT_2026_09_14; not attributed to original lecture figures",
+  "prior_spec_sha256": "1ccacdae5a54a15ac9fa0148cc7f406bfa472820bd27b44c177400eafb4280b1",
+  "requirements_references": [
+    "BBI与多模型解释要求.md",
+    "理论与实盘图表对照要求.md",
+    "../BBI支持证据修订说明.md"
+  ],
+  "supersedes_bbi_entry_states": true
+}

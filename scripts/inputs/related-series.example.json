@@ -1,0 +1,17 @@
+{
+  "series": [
+    {
+      "id": "broad_index",
+      "name": "相关大盘或行业指数",
+      "transport": "akshare",
+      "api": "填写已核验的AKShare接口名",
+      "kwargs": {"symbol": "填写代码"},
+      "market": "CN",
+      "symbol": "填写代码",
+      "role": "benchmark_or_sector",
+      "price_basis": "raw_index",
+      "price_unit": "index points",
+      "volume_label": "provider volume"
+    }
+  ]
+}

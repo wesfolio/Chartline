@@ -1,0 +1,24 @@
+[
+  {
+    "id": "sina-hk-1.18.94-float-tail-00700",
+    "api": "stock_hk_daily",
+    "market": "HK",
+    "symbol": "00700",
+    "akshare_version": "1.18.94",
+    "adapter_source_sha256": "5c28fbb5ec5a1ff9bc76194dc7c3acd27ad641381495facdec249bfc3cf48392",
+    "decimals": 4,
+    "max_abs_change": 1.1e-05,
+    "reason": "Observed 0.00001 close-price tails breaking high/low invariants. Only invariant-breaking rows repaired; original fields retained. This is a normalization assumption, not exchange tick-size validation."
+  },
+  {
+    "id": "sina-hk-1.18.94-float-tail-00005",
+    "api": "stock_hk_daily",
+    "market": "HK",
+    "symbol": "00005",
+    "akshare_version": "1.18.94",
+    "adapter_source_sha256": "5c28fbb5ec5a1ff9bc76194dc7c3acd27ad641381495facdec249bfc3cf48392",
+    "decimals": 4,
+    "max_abs_change": 1.1e-05,
+    "reason": "Observed 0.00001 close-price tails breaking high/low invariants. Only invariant-breaking rows repaired; original fields retained. This is a normalization assumption, not exchange tick-size validation."
+  }
+]

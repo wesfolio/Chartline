@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-09-17T09:22:34.429375+00:00",
+  "market": "CN",
+  "symbol": "002714",
+  "name": "SYNTHETIC TEST EQUITY",
+  "hogs_requested": false,
+  "mode": "FROZEN_TEST_ONLY",
+  "items": [
+    {
+      "id": "equity",
+      "name": "SYNTHETIC equity",
+      "kind": "equity",
+      "status": "FETCH_OK",
+      "format": "akshare",
+      "rows_file": "equity/api-return.json",
+      "meta_file": "equity/result.json",
+      "fetched_at": "2026-09-17T09:22:33.455966+00:00",
+      "sha256": "7702dc3a4833ee9fb7b56a99d2840bfe21670ceaafd36925c51ebf11a5dfe226",
+      "symbol": "002714",
+      "market": "CN",
+      "synthetic": true
+    },
+    {
+      "id": "hog_sina",
+      "name": "SYNTHETIC hog_sina",
+      "kind": "futures",
+      "status": "FETCH_OK",
+      "format": "akshare",
+      "rows_file": "hog_sina/api-return.json",
+      "meta_file": "hog_sina/result.json",
+      "fetched_at": "2026-09-17T09:22:32.835329+00:00",
+      "sha256": "d028c05c002c46437be65385d8ae731e5a43c6ae746e5972d24b6bfa216e1d6e",
+      "symbol": "LH0",
+      "market": "CN",
+      "synthetic": true
+    },
+    {
+      "id": "hog_contract",
+      "name": "SYNTHETIC hog_contract",
+      "kind": "futures",
+      "status": "FETCH_OK",
+      "format": "akshare",
+      "rows_file": "hog_contract/api-return.json",
+      "meta_file": "hog_contract/result.json",
+      "fetched_at": "2026-09-17T09:22:32.671719+00:00",
+      "sha256": "bba8e0cff233905751bb5aee7f9d335f623be65e751c6aa531463fa688e904d1",
+      "symbol": "LH2611",
+      "market": "CN",
+      "synthetic": true
+    },
+    {
+      "id": "hog_main",
+      "name": "SYNTHETIC hog_main",
+      "kind": "futures",
+      "status": "FETCH_OK",
+      "format": "eastmoney",
+      "rows_file": "hog_main.json",
+      "fetched_at": "2026-09-17T09:22:34.429375+00:00",
+      "sha256": "4dc99bc70959692010ad9b95084bf35159e2f47b54d7ed88279a4f6bd4db3738",
+      "symbol": "114.lhm",
+      "market": "CN",
+      "synthetic": true
+    },
+    {
+      "id": "hog_weighted",
+      "name": "SYNTHETIC hog_weighted",
+      "kind": "futures",
+      "status": "FETCH_OK",
+      "format": "eastmoney",
+      "rows_file": "hog_weighted.json",
+      "fetched_at": "2026-09-17T09:22:34.429375+00:00",
+      "sha256": "07d7666d804f95aaa7be6128e579e35454796bf07d73c51f8b4235a869fe4b65",
+      "symbol": "159.lhfi",
+      "market": "CN",
+      "synthetic": true
+    }
+  ],
+  "synthetic": true
+}

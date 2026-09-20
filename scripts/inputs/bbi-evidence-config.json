@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "min_prior_above_bars": {"1d": 5, "1w": 3},
+  "parameter_origin": "Unvalidated engineering defaults; user has not specified duration",
+  "above_definition": "Completed close strictly above contemporaneous BBI",
+  "touch_reference": "Previous completed bar BBI; low <= reference <= high",
+  "close_guard": "Completed close >= previous BBI; below it withdraws support",
+  "evidence_role": "SUPPORT_ONLY",
+  "numeric_score_weight": null,
+  "sufficient_to_buy": false
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "tx-1.18.94-cn-000001-volume-lots",
+    "api": "stock_zh_a_hist_tx",
+    "market": "CN",
+    "symbol": "000001",
+    "akshare_version": "1.18.94",
+    "adapter_source_sha256": "f47fa6616556d5022ce710161fabffe99bb75324ab2740d3e4fa0d1fc7c4f4a6",
+    "multiplier": 100,
+    "reason": "Installed API excludes sz000 prefix from lots-to-shares conversion; crosschecked against Sina and amount/volume/price",
+    "evidence": [
+      "snapshots/fallback-01/cn-pingan-tx-raw",
+      "snapshots/fallback-01/cn-pingan-sina-raw"
+    ]
+  }
+]

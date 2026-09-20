@@ -1,0 +1,10 @@
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.csv text eol=lf
+# Snapshot SHA256 checks require byte-for-byte preservation.
+scripts/tests/fixtures/**/*.json -text
+scripts/tests/fixtures/*.json -text

@@ -1,0 +1,29 @@
+{
+  "job": {
+    "id": "synthetic",
+    "api": "futures_zh_daily_sina",
+    "kwargs": {
+      "symbol": "LH0"
+    },
+    "market": "CN",
+    "symbol": "LH0"
+  },
+  "status": "FETCH_OK",
+  "rows": 1381,
+  "columns": [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "hold",
+    "settle"
+  ],
+  "synthetic": true,
+  "started_at": "2026-09-17T09:22:34.429375+00:00",
+  "finished_at": "2026-09-17T09:22:34.429375+00:00",
+  "api_return_sha256": "d028c05c002c46437be65385d8ae731e5a43c6ae746e5972d24b6bfa216e1d6e",
+  "http_requests": 0,
+  "akshare_version": "SYNTHETIC"
+}

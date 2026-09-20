@@ -1,0 +1,33 @@
+{
+  "job": {
+    "id": "synthetic",
+    "api": "stock_zh_a_daily",
+    "kwargs": {
+      "symbol": "sz002714",
+      "start_date": "20230101",
+      "end_date": "20260917",
+      "adjust": "qfq"
+    },
+    "market": "CN",
+    "symbol": "002714"
+  },
+  "status": "FETCH_OK",
+  "rows": 900,
+  "columns": [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "outstanding_share",
+    "turnover"
+  ],
+  "synthetic": true,
+  "started_at": "2026-09-17T09:22:34.429375+00:00",
+  "finished_at": "2026-09-17T09:22:34.429375+00:00",
+  "api_return_sha256": "7702dc3a4833ee9fb7b56a99d2840bfe21670ceaafd36925c51ebf11a5dfe226",
+  "http_requests": 0,
+  "akshare_version": "SYNTHETIC"
+}

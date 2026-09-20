@@ -1,0 +1,29 @@
+{
+  "job": {
+    "id": "synthetic",
+    "api": "futures_zh_daily_sina",
+    "kwargs": {
+      "symbol": "LH2611"
+    },
+    "market": "CN",
+    "symbol": "LH2611"
+  },
+  "status": "FETCH_OK",
+  "rows": 199,
+  "columns": [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "hold",
+    "settle"
+  ],
+  "synthetic": true,
+  "started_at": "2026-09-17T09:22:34.429375+00:00",
+  "finished_at": "2026-09-17T09:22:34.429375+00:00",
+  "api_return_sha256": "bba8e0cff233905751bb5aee7f9d335f623be65e751c6aa531463fa688e904d1",
+  "http_requests": 0,
+  "akshare_version": "SYNTHETIC"
+}
