@@ -1,6 +1,4 @@
-# Chartline · 价格见势
-
-**Rootline 研究企业根基，Chartline 研究价格走势。**
+# Chartline 
 
 Chartline 是面向 AI 编程助手的股票技术分析 Skill，结合 Python 与 AKShare 获取行情、计算日周线指标、识别形态、展示模型分歧并生成中文 PDF。它是研究工具，不是训练完成的预测模型或自动交易系统。
 
